@@ -1,0 +1,108 @@
+{
+  "_note": "Établissement, avis et concurrents fictifs, pour démonstration. Photos : données d'exemple scikit-image (CC0) et un menu généré.",
+  "locale": "fr",
+  "audit_date": "20 sept. 2026",
+  "projection_months": 3,
+  "prospect": {
+    "business_name": "Café des Tilleuls",
+    "vertical": "cafe",
+    "city": "Saint-Aubin",
+    "address": "12 place des Tilleuls, Saint-Aubin",
+    "phone_display": "02 55 55 55 55",
+    "price_level": "€",
+    "primary_category": "Restaurant",
+    "primary_category_specific": false,
+    "secondary_categories": [],
+    "rating": 4.1,
+    "review_count": 22,
+    "reviews_last_90d": 1,
+    "owner_reply_rate": 0.1,
+    "photo_count": 2,
+    "has_description": false,
+    "has_hours": true,
+    "hours_today": "Ferme à 19:00",
+    "has_website": false,
+    "has_services_or_menu": false,
+    "last_update_days_ago": 400,
+    "is_claimed": false,
+    "email": "contact@example.fr",
+    "phone": "+33255555555",
+    "photos": [{ "src": "photos/brick-dim.png" }],
+    "recent_reviews": [
+      {
+        "author": "Julien P.",
+        "meta": "4 avis",
+        "rating": 3,
+        "when": "il y a 6 mois",
+        "text": "Bon café mais plus de croissants à 10 h un samedi. Dommage."
+      },
+      {
+        "author": "Claire B.",
+        "meta": "Local Guide · 57 avis",
+        "rating": 4,
+        "when": "il y a 9 mois",
+        "text": "Terrasse agréable et accueil sympathique."
+      }
+    ]
+  },
+  "competitors": [
+    { "name": "Maison Perrin", "review_count": 184, "rating": 4.7 },
+    { "name": "Le Comptoir du Marché", "review_count": 121, "rating": 4.5 },
+    { "name": "La Fournée", "review_count": 67, "rating": 4.4 }
+  ],
+  "proposal": {
+    "primary_category": "Café",
+    "secondary_categories": ["Salon de thé", "Boulangerie", "Brunch"],
+    "hours_today": "Ferme à 19:00",
+    "website_url": "cafedestilleuls.fr",
+    "description": "Café-boulangerie sur la place des Tilleuls. Café de torréfacteur, viennoiseries pur beurre sorties du four chaque matin, formules déjeuner et brunch le dimanche. Terrasse ombragée aux beaux jours.",
+    "services": ["Café de torréfacteur", "Viennoiseries maison", "Formule déjeuner", "Brunch du dimanche", "Terrasse"],
+    "photos": [
+      { "src": "photos/coffee.png" },
+      { "src": "photos/coffee-closeup.png", "label": "Récentes" },
+      { "src": "photos/menu-board.png", "label": "Menu" },
+      { "src": "photos/brick-warm.png", "label": "Ambiance" }
+    ],
+    "posts": [
+      { "text": "Nouveau : latte érable et cake potiron toute la semaine.", "when": "il y a 2 jours", "photo": "photos/coffee-closeup.png" },
+      { "text": "Brunch du dimanche, 10 h à 14 h. Pensez à réserver !", "when": "il y a 1 semaine", "photo": "photos/menu-board.png" }
+    ],
+    "illustrative_reviews": [
+      {
+        "author": "Sophie L.",
+        "meta": "Local Guide · 43 avis · 120 photos",
+        "rating": 5,
+        "when": "il y a 2 semaines",
+        "text": "Le meilleur café de Saint-Aubin et des croissants encore tièdes à 9 h. Accueil adorable, on s'y sent comme chez soi.",
+        "owner_reply": "Merci Sophie ! Les croissants vous attendent chaque matin. À très vite, l'équipe des Tilleuls",
+        "owner_reply_when": "il y a 2 semaines"
+      },
+      {
+        "author": "Thomas G.",
+        "meta": "12 avis",
+        "rating": 5,
+        "when": "il y a 1 mois",
+        "text": "Brunch du dimanche excellent, produits frais et service rapide malgré le monde.",
+        "owner_reply": "Merci Thomas, ravis que le brunch vous ait plu. À dimanche prochain !",
+        "owner_reply_when": "il y a 1 mois"
+      }
+    ],
+    "photo_shot_list": ["Devanture", "Comptoir", "Café signature", "Vitrine des viennoiseries", "L'équipe", "Terrasse"],
+    "update_ideas": [
+      "Semaine 1 : nouvelle carte d'automne",
+      "Semaine 2 : le brunch du dimanche",
+      "Semaine 3 : notre torréfacteur du mois",
+      "Semaine 4 : carte de fidélité, le 10e café offert"
+    ],
+    "sample_review_reply": {
+      "review_excerpt": "Bon café mais plus de croissants à 10 h un samedi. Dommage.",
+      "reply": "Merci pour votre retour ! Nous avons augmenté la fournée du samedi, les croissants sont désormais là jusqu'à midi. Au plaisir de vous revoir, l'équipe des Tilleuls."
+    },
+    "setup_photo_count": 20
+  },
+  "links": {
+    "checkout": "https://example.fr/abonnement",
+    "booking": "https://example.fr/rdv",
+    "optout": "https://example.fr/stop"
+  }
+}

@@ -86,18 +86,14 @@ flowchart TD
 
 **The message:**
 - **Timing:** 2-24 hours after the visit.
-- **Wording:** the same for everyone, for example: "Thanks for visiting Trattoria Olivo. Would you share a quick Google review? {link}".
+- **Wording:** the same for everyone, for example: "Thanks for visiting Ember & Oak. Would you share a quick Google review? {link}".
 - **Reminders:** at most one.
 
 **Rules:**
-- no gating, no incentives, no staff names;
-- the list is sent at a steady pace, never all at once (Google restricts profiles with sudden review spikes since 2026-02);
-- stop the moment a customer opts out.
+- send at a steady pace, never the whole list at once (Google restricts profiles with sudden review spikes since 2026-02);
+- stop the moment a customer replies stop.
 
-**SMS compliance:**
-- US texts need A2P 10DLC registration, and consent from customers the business collected [U].
-- EU: the business needs a lawful basis to message its customers.
-- Default to email where consent for texts is unclear. This belongs in the client terms and data processing agreement.
+**SMS setup:** US business texting needs A2P 10DLC registration with the carriers, or messages get blocked [U]. Twilio handles the registration in a few days.
 
 ## 5. Review reply rules (the `review-reply` skill)
 

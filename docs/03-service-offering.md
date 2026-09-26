@@ -19,7 +19,7 @@ US prices first; France prices (HT, excluding VAT) in brackets.
 1. **Access and verification.**
    - If the profile is claimed: the owner adds our business group as Manager (guided).
    - If it's unclaimed: we coach the owner through Google verification on a guided call, with a video-verification checklist.
-2. **Compliance audit.** Business name must be the real name, address rules, service-area setup, duplicates, pending edits, suspension risk.
+2. **Profile health check.** Business name, address and service-area setup, duplicates, pending edits and suspension risk.
 3. **Category research.** Compare against the 3 businesses ranking above them in the map pack, then set the primary and secondary categories.
 4. **Complete the profile:**
    - description (750 characters, factual, no keyword stuffing);
@@ -66,7 +66,7 @@ US prices first; France prices (HT, excluding VAT) in brackets.
 | Geotagged photos | A myth; Google strips the location data |
 | Q&A seeding | The feature is gone |
 | Blasts to hundreds of directory listings | Only the core listings matter (about 6-7% weight). We do Apple, Bing and the core directories only. |
-| Fake, bought or "review exchange" reviews | Illegal (FTC rule, UK DMCC Act, EU Omnibus Directive) and against Google policy |
+| Fake, bought or "review exchange" reviews | Google detects and removes them, and can restrict the profile |
 | "Guaranteed #1" | Impossible to guarantee, and misleading |
 
 Saying this publicly is part of the trust positioning.
@@ -79,12 +79,10 @@ Saying this publicly is part of the trust positioning.
 - **100 take-home cards:** QR code on one side, "How was your visit?" on the other.
 - **Personal review link:** `mpk.to/<slug>`. Both the QR code and NFC chip point to it, and it redirects straight to the Google review form using the profile's `newReviewUri` from the Business Information API.
 
-### Designed to stay inside Google's policy
+### Design notes
 
-- **Passive:** customers use their own phones. No tablet or kiosk on the premises.
-- **Everyone goes straight to Google.** No "were you happy?" screen, and no star filter before the link.
-- **No incentives:** no discount, raffle or freebie for reviews. No staff quotas, and no asking customers to name staff (banned since 2026-04-17).
-- **No Google logos** on the kit. The text reads "Review us on Google" in plain type only.
+- **Customers tap or scan with their own phones** and land straight on the Google review form.
+- **Keep review flow steady.** Google restricts profiles with sudden review spikes (since 2026-02), so the kit and follow-up texts spread requests over time.
 - **The chip is locked** so strangers can't rewrite it.
 - **The link keeps working forever, even if the client cancels.** This is a trust promise, and costs us almost nothing.
 

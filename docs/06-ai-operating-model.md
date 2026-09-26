@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TB
   subgraph Data["System of record"]
-    DB[(Postgres or Attio<br/>leads, clients, jobs, consent, suppression)]
+    DB[(Postgres or Attio<br/>leads, clients, jobs, call status, do-not-contact)]
     GS[Google Sheet mirror<br/>read-only, for Muse/you]
   end
   subgraph Orchestration["n8n (self-hosted)"]
@@ -34,7 +34,7 @@ flowchart TB
 ```
 
 **Why n8n + the Claude API, and not one big autonomous agent:**
-- **Business steps are fixed.** Deterministic pipelines handle them: a lead never skips the compliance gate.
+- **Business steps are fixed.** Deterministic pipelines handle them: every lead goes through the same checks (do-not-contact list, calling hours, caps).
 - **Language models handle the language work:** writing, classifying, judging.
 - **Everything is logged and repeatable.** Each job has an ID and can be safely re-run.
 - **The cost is predictable.**
@@ -50,11 +50,11 @@ flowchart TB
 | # | Function | Agent (skill) | Models / tools | Trigger | Start at | Graduate to | Promotion criteria |
 |---|---|---|---|---|---|---|---|
 | 1 | Prospecting | Prospector | n8n + Outscraper/DataForSEO + Haiku (website parsing) | Weekly per city and vertical | A1 (you approve cities, verticals and volume) | A2 | 4 clean weeks |
-| 2 | Compliance gate | Guard (code, not a model) | `config/compliance.yaml` | Before every send or call | A3 | A3 | Code, with tests |
+| 2 | Contact rules | Guard (code, not a model) | `config/markets.yaml` + do-not-contact list | Before every send or call | A3 | A3 | Code, with tests |
 | 3 | Audit + proposal | Auditor (`gbp-audit`) | Sonnet 5 (Batch) + renderer | New qualified lead | A1 (100% of the first 50) | A3 (10% random + low-confidence cases) | ≤2% material errors |
 | 4 | Email copy | Copywriter (`outreach-email`) | Sonnet 5 + Instantly API | Audit ready | A1 (templates) | A3 | Templates approved; spam and complaint rates within limits |
 | 5 | Inbox | Triage (`reply-triage`) | Haiku 4.5 classify + Sonnet 5 draft | Reply webhook | A1 for replies; A3 for unsubscribes | A3 | 50 drafts approved without edits |
-| 6 | Voice | Kit (Bland persona) | Bland pathways + tools | Consent form, inbound, onboarding, check-ins | A2 (you review transcripts daily) | A3 | 20 calls with no issues |
+| 6 | Voice | Kit (Bland persona) | Bland pathways + tools | First call, follow-ups, walkthroughs, inbound, onboarding, check-ins | A2 (you review 10 transcripts a day) | A3 | 50 calls with no agent issues |
 | 7 | Sales close | Closer | Stripe Checkout + webhooks | Checkout link clicked or paid | A3 | A3 | n/a |
 | 8 | Onboarding | Coordinator | n8n + email/SMS + Bland | Payment received | A2 | A3 | 80% of clients give access within 14 days |
 | 9 | Setup | Fulfiller (`gbp-audit` proposal reused) | Sonnet 5 + Localo / GBP API | Access granted | A1 (you approve each setup) | A2 | 20 setups with no rework |
@@ -81,23 +81,21 @@ flowchart TB
 - An edit is saved as a new example for the skill, so the prompts improve as you go.
 - Items not acted on within 48 hours escalate to the digest. Nothing sends silently while it waits for you.
 
-## 4. Guardrails (non-negotiable, enforced in code or prompts)
+## 4. Operating rules (enforced in code or prompts)
 
-1. **No AI cold calls.** The voice path requires `consent_status in [written, inbound, client]`.
-2. **No invented facts.** Audits quote only fields from the data. The model must mark anything uncertain with `confidence: low`, which sends it to the queue.
-3. **No Google impersonation.** No Google logos, no "Google partner" claims. Every visual has the disclaimer.
-4. **No ranking guarantees, fake urgency or fear copy.** A banned-phrases list is checked on every outbound message.
-5. **Review integrity.** No gating, incentives or staff-name requests, and no reviews written by us or the model.
-6. **Suppression is global and permanent,** across email, calls, SMS and direct mail.
-7. **Money actions stay with you:** refunds, discounts and custom deals.
-8. **Kill switch:** one n8n flag pauses all outbound (email, calls, mail). The Guard trips it automatically when bounces go over 3% or complaints over 0.2%.
+1. **Today's facts come from the data.** Audits quote listing fields as they are. The 90-day side comes from `projection.js`, so emails, calls and visuals quote the same numbers. The model marks uncertain audits `confidence: low`, which sends them to the queue.
+2. **Calls:** leads marked `prior_approval`, `inbound` or `client`, inside each market's calling hours, at most 3 attempts per lead.
+3. **Stop means stop,** across email, calls, SMS and mail, permanently.
+4. **We post review replies, never reviews,** on client profiles. Negative-review replies wait for the owner.
+5. **Money actions stay with you:** refunds, discounts and custom deals.
+6. **Kill switch:** one n8n flag pauses all outbound (email, calls, mail). The Guard trips it automatically when email bounces go over 3%, complaints over 0.2%, or the call answer rate drops below 5% (numbers flagged as spam).
 
 ## 5. Data model (Muse-friendly)
 
 **Lead record:** the schema is in `config/lead.schema.json`. Key fields:
 - `lead_id`, `place_id`, `business_name`, `vertical`, `city`, `country`, `legal_form`
 - `email`, `email_status`, `phone_e164`, `line_type`
-- `consent_status`, `consent_evidence`, `suppressed`
+- `consent_status` (`prior_approval`, `inbound`, `client`), `suppressed`
 - `segment`, `health_score`, `priority`, `audit_token`, `stage`
 - `last_email_thread_id`, `last_call_id`, `owner_notes`
 
@@ -133,7 +131,7 @@ flowchart TB
 8. **Don't depend on unconfirmed Muse features:** MCP support, the skills folder path, pricing caps.
 
 **Where Muse could fit later:**
-- as **your** operator console: "What's in my approval queue?", "Call Marco at Trattoria Olivo about his renewal" (with consent);
+- as **your** operator console: "What's in my approval queue?", "Call Dana at Ember & Oak about her renewal";
 - **not** as the campaign engine. Its phone plan is one call at a time and 500 calls a day, and the same calling laws apply.
 
 ## 7. Cost of the AI layer (per month)

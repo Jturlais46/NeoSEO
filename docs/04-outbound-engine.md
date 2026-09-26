@@ -1,234 +1,186 @@
 # Outbound engine
 
-**Principle:** the edge is **proof, not persistence**. Every prospect sees their own profile fixed, specifically and correctly, before we ask for anything. AI makes that proof cheap enough to produce for thousands of businesses a month.
+**Principle:** show every owner the profile they could have, then call them about it. The visual earns attention and the call converts it. AI makes both cheap enough to run for thousands of businesses a month.
 
 ```mermaid
 flowchart LR
   A[Source listings<br/>Outscraper / DataForSEO] --> B[Enrich contacts<br/>site crawl + Prospeo/Findymail]
-  B --> C[Verify + compliance gate<br/>MillionVerifier, suppression,<br/>jurisdiction, legal form]
+  B --> C[Verify + dedupe<br/>MillionVerifier, do-not-contact list]
   C --> D[Score + segment<br/>score.js]
   D --> E[Audit + proposal<br/>gbp-audit skill]
-  E --> F[Render visual + audit page<br/>tools/audit-visual]
-  F --> G[Sequence<br/>Instantly API]
+  E --> F[Capture today + render 90-day panel<br/>tools/audit-visual]
+  F --> G[Email sequence<br/>Instantly API]
+  F --> V[Bland calls<br/>first call + follow-ups]
   G -->|reply| H[Triage<br/>reply-triage skill]
-  H -->|interested| I[In-thread reply<br/>visual + audit link]
-  H -->|call me + consent| J[Bland callback]
-  I --> K[Stripe Checkout / booking]
-  J --> K
-  H -->|stop| S[(Suppression list)]
-  G -->|audit page view| D
+  G -->|audit page view| V
+  H -->|interested / call me| V
+  V --> K[Stripe Checkout / booking]
+  H --> K
+  H -->|stop| S[(Do-not-contact)]
+  V -->|stop| S
 ```
 
 ## 1. Lead sourcing
 
-- **Where:** one vertical × one metro area per batch. Start with cities of 100k-1M people, where profiles are neglected and competition is moderate.
+- **Batches:** one vertical × one metro area per batch. Start with cities of 100k-1M people, where profiles are neglected and competition is moderate.
 - **Primary source: Outscraper Google Maps.**
-  - Fields: `verified`, `rating`, `reviews`, `photos_count`, categories, website, hours, posts.
-  - Cost: about $3 per 1,000, plus Emails & Contacts at about $3 per 1,000 [S].
+  - Fields: `place_id`, `verified`, `rating`, `reviews`, `photos_count`, categories, website, hours, posts, photos.
+  - Recent reviews come through the reviews endpoint.
+  - Cost: about $3 per 1,000 listings, plus about $3 per 1,000 for emails and contacts.
 - **Alternative: DataForSEO Business Data.**
-  - Fields: `is_claimed`, `total_photos`, reviews with `owner_answer`, Updates [V].
-  - Useful for deeper audits of shortlisted leads.
-- **Competitors:** for each lead, take the 3 businesses ranking above it for its main query in the same area. They become the benchmark for the review gap.
-- **Terms of service:** both providers scrape Google, so the exposure under Google's terms sits mainly with them.
-  - We use only public business data and store the minimum.
-  - We don't republish reviewers' names or photos.
-  - Google Places API data isn't used for the lead database, because its terms forbid that.
+  - Fields: `is_claimed`, `total_photos`, reviews with `owner_answer`, posts.
+  - Use it for deeper audits of shortlisted leads.
+- **Competitors:** the 3 businesses ranking above the lead for its main query in the same area. They're the benchmark for the review gap and set the default review pace in the projection.
 
 ## 2. Contact enrichment (waterfall)
 
-1. **Crawl the business website** with the LLM: About and Contact pages, and the footer. Extract the owner's name, role email and any published contact.
+1. **Crawl the business website with the LLM.** Look at the About and Contact pages and the footer for the owner's name, email and phone.
 2. **Outscraper Emails & Contacts.**
-3. **Fill gaps with Prospeo or Findymail** (charged only for verified results).
-4. **Verify with MillionVerifier.** Send only to addresses marked "ok"; drop "catch-all", unless the address came from the business's own site.
-5. **Check the line type with Twilio Lookup** (about $0.008 per number) for any phone number, even though we won't cold call it. This keeps the CRM honest about which numbers are mobiles.
+3. **Prospeo or Findymail** for gaps. Both charge only for verified results. Findymail and Prospeo also return mobile numbers, which reach the owner better than the shop landline.
+4. **MillionVerifier.** Send only to addresses marked "ok".
+5. **Twilio Lookup** (about $0.008 per number) to know whether a number is a mobile or a landline. A landline call reaches staff, so the Bland opener asks for the owner. A mobile call usually reaches the owner directly.
 
-## 3. Compliance gate (runs before any send; code spec in `config/compliance.yaml`)
+## 3. Contact rules (operational, from `config/markets.yaml`)
 
-A lead is dropped or held if any of these is true:
-
-- **Suppression:** it's on the do-not-contact list (email, domain, phone or place ID). The list is shared across all channels and never expires.
-- **Country rules:**
-  - Germany: skip.
-  - UK: skip unless the legal form is a limited company or LLP. Sole traders need consent.
-  - Canada: skip for now.
-  - France: the offer must relate to their profession (it always does). Use professional addresses, and include the notice required by GDPR Art. 14.
-- **US state rules:**
-  - California: no automated calls, ever, without a natural-voice opener.
-  - Washington: no automated calls.
-- **Business status:** permanently closed, or the category is excluded (medical at pilot stage).
-- **Data quality:** the email is a personal Gmail with no business evidence on the website. This rule is stricter than the law requires, to protect deliverability and reputation.
-
-**Every email includes:**
-- the real sender name and company;
-- a postal address;
-- a one-line opt-out ("Reply 'stop' and I'll never email again"), plus a List-Unsubscribe header;
-- for France: one sentence saying where the data came from, plus a link to the privacy notice.
+- **Stop requests:**
+  - Anyone who says stop, on any channel, goes on the global do-not-contact list, keyed by email, domain, phone and place ID.
+  - Every channel checks the list before sending.
+- **Calls:**
+  - Only to leads with `consent_status` = `prior_approval`, `inbound` or `client`. You confirm the approvals.
+  - At most 3 attempts per lead, at least 48 hours apart, inside local business hours on the best call days.
+  - Rotate caller numbers when the answer rate drops below 5%. That usually means carriers have labelled the numbers "Spam Likely".
+- **Email:**
+  - No link in email 1.
+  - Pause any domain whose bounce rate goes over 3% or whose complaint rate goes over 0.2%.
+- **Verticals:** skip medical, dental and legal at pilot stage. Replies to their reviews carry patient-privacy risk that isn't worth it early on.
 
 ## 4. Scoring and segmentation
 
-`tools/audit-visual/src/score.js` computes:
-- a **Profile Health Score** from 0 to 100 (13 weighted checks);
-- a **lead priority**: the size of the gap, whether we can contact them, and whether they're an established business.
+`tools/audit-visual/src/score.js` computes a **Profile Score** (0-100, from 13 weighted checks) and a **lead priority** (size of the gap × whether we can reach them × whether the business is established).
 
-**Segment rules:**
-- `is_claimed == false` → **Unclaimed**
-- review count below 60% of the competitor median, and fewer than 5 reviews in 90 days → **Behind on reviews**
-- otherwise, a health score under 60 → **Neglected**
-- a score of 75 or more → **skip** (they don't need us, and the pitch would be weak)
+| Segment | Rule |
+|---|---|
+| **Unclaimed** | `is_claimed == false` |
+| **Behind on reviews** | Review count under 60% of the competitor median, and fewer than 5 reviews in the last 90 days |
+| **Neglected** | Everything else scoring under 60 |
+| **Skip** | Score of 75 or more: little to sell them |
 
-## 5. The audit (the product before the product)
+## 5. The visual (the product before the product)
 
-**Per lead, the `gbp-audit` skill produces the prospect JSON** in the renderer's input format:
-
-- **Facts:** listing data, the score and findings, competitors.
-- **Proposal:**
-  - primary and secondary categories;
-  - a 750-character description;
-  - services;
-  - a photo shot list;
-  - 4 update ideas;
-  - a draft reply to their latest review. Only the review text is used; the reviewer's name is never shown.
-
-**The renderer then produces:**
-- `card.png`: the before/after visual;
-- `index.html`: the audit page;
-- `audit.json`: the facts that emails and calls quote.
-
-This keeps every channel consistent.
-
-**Honesty rules**, enforced in code (see the tests):
-- The "after" score changes only what setup controls. Rating, review count and review recency are never changed.
-- No Google logos or copies of Google's interface. Every visual and page is labeled as an illustration and "not affiliated with Google".
+**Per lead:**
+1. **`gbp-audit` skill.** Produces the prospect JSON:
+   - **today's facts:** from the listing;
+   - **the proposal:** categories, description, services, photos, posts;
+   - **2 illustrative reviews with owner replies**, written for that business;
+   - **optionally, a custom review pace.**
+2. **`capture.js`.** Grabs the real Google Maps panel as the "today" image.
+3. **`render.js`.** Builds:
+   - the 90-day panel;
+   - the comparison image;
+   - the 1200×630 card;
+   - the audit page;
+   - `audit.json`, holding reviews, rating and score today and projected.
 
 **Quality control:**
-- A human reviews 100% of the first 50 audits, then 10% at random, plus every lead the model marks as "low confidence".
-- Common failure modes to check: a wrong category suggestion, and describing services the business doesn't offer.
+- **First 50:** a human checks every audit.
+- **After that:** a 10% random sample, plus anything the model marks low confidence.
+- **What goes wrong most often:**
+  - a wrong category suggestion;
+  - services the business doesn't offer;
+  - photos that aren't the business's own. Use their listing, website or Instagram photos.
 
-Sample output: [assets/sample-card-en.png](assets/sample-card-en.png), [assets/sample-audit-page.png](assets/sample-audit-page.png).
+## 6. The sequence (email copy in `outreach/email/`, call flows in `outreach/voice/`)
 
-## 6. The sequence (full copy in `outreach/email/`)
+| Day | Channel | Content |
+|---|---|---|
+| 0 | Email 1 | 3 specific findings + "I mocked up your profile in 90 days. Want it?" No link. |
+| 1 | **Bland call 1** | Opener with the headline numbers ("31 reviews today, about 120 in 90 days"). Offer to text or email the visual. Close to checkout or a booked call. |
+| 3 | Email 2 | The card image + link to the audit page |
+| 5 | **Bland call 2** (if no answer or no decision) | Follow-up: "Did you get a chance to see your 90-day profile?" |
+| 7 | Email 3 | Segment angle: review gap against named competitors / Ask Maps (US) / "anyone can edit your listing" |
+| 10 | **Bland call 3** (only if they engaged: opened the audit page or replied) | Walkthrough and close |
+| 14 | Email 4 | Close the loop |
 
-**Deliverability comes first.**
-- The first email is plain text with no link and no image.
-- The visual arrives either inside the thread after a reply, or on our branded audit page, with one link in email 2.
+**Event triggers, which override the calendar:**
+- **Audit page viewed:** a Bland call within 2 hours, inside the calling window. The page view is the warmest moment.
+- **Reply "call me" or a question:** a Bland call at the requested time.
+- **Stop, on any channel:** end everything.
 
-| Step | Day | Content | Link? |
-|---|---|---|---|
-| 1 | 0 | 3 specific findings from `audit.json`, then "I mocked up your profile fixed. Want me to send it over?" | No |
-| 2 | 3 | "Here it is anyway": one line plus the audit page link | 1 (branded domain) |
-| 3 | 7 | Segment angle: the review gap against named competitors, or Ask Maps, or "anyone can edit your listing" | No |
-| 4 | 14 | Close the loop: "Should I delete your audit?" | No |
-
-**Rules:**
-- under 80 words per email;
+**Email rules:**
+- under 80 words;
 - no open tracking;
-- a custom tracking domain for the one link;
-- sending from secondary domains only, never from our main domain.
+- one link at most from email 2 onward;
+- secondary domains only;
+- the founder's real name in the signature.
 
-**Personalization depth:**
-- every email uses the business's own numbers and competitor names;
-- the model writes one tailored sentence per email, within strict templates.
+## 7. Reply handling (`reply-triage` skill)
 
-**Signals:**
-- **Audit page viewed** (logged on our server): move the lead to the front of the queue, and send email 3 sooner. Never mention that they viewed it.
-- **Two or more views, or a click on the checkout button without paying:** create a task for you to send a short personal video or email.
-
-## 7. Reply handling (the `reply-triage` skill)
-
-**Classification** (Haiku 4.5, with a strict output schema):
+**Classes:**
 - interested
 - question
-- price question
+- price
 - call me
 - not now
+- has a provider
 - not interested
-- unsubscribe
+- stop
 - wrong person
 - out of office
-- is this a scam / is this Google
+- "is this Google?"
 
 **Actions:**
-- **Unsubscribe or not interested:** suppress immediately, with no reply (or a one-line confirmation where the law requires it).
-- **Interested or question:** a Sonnet draft replies in the thread with the inline card image, the audit link, and the price with the checkout link. **You approve** drafts until 50 have been approved without edits; after that they send automatically, and only exceptions come to you.
-- **Call me:** reply with a 2-field consent form: number, plus a checkbox reading *"Mapkeeper may call me about my request, including with an AI assistant. I can opt out anytime."* A Bland callback is scheduled only after the form is submitted, and within business hours.
-- **Scam or Google question:** a standard, honest answer (who we are, not Google, the founder's name, a link to the public pricing page, "you don't have to reply").
+- **Stop / not interested:** suppress, no reply.
+- **Interested / question / price:** a draft reply in the same thread with `comparison.png`, the audit link and the checkout link, plus a Bland call if we have a number. You approve drafts until 50 go through with no edits; after that they send automatically.
+- **Call me:** schedule the Bland call at the requested time.
+- **Is this Google?:** an honest one-liner: "We're Mapkeeper, an independent team that manages Google profiles for local businesses."
 
-## 8. Voice (Bland): where it's used
+## 8. Voice (Bland)
 
-**No AI cold calls.** Voice starts only after consent, inbound contact, or an existing client relationship. Specs are in `outreach/voice/`.
-
-| Flow | Trigger | Legal basis |
-|---|---|---|
-| **Callback walkthrough** | Consent form submitted | Prior express written consent, with the form wording reviewed by a lawyer |
-| **Inbound line** | Prospect or client calls the number in our emails or on the site | Inbound call |
-| **Onboarding verification coach** | New client, scheduled by them | Customer relationship + the booking |
-| **Client check-in** (day 30, day 90, before renewal) | Existing client | Customer relationship + consent in the terms |
-
-**Every call:**
-- starts by saying "Mapkeeper's AI assistant" and giving the reason for the call;
-- includes a recording notice;
-- has an opt-out tool that writes to the suppression list;
-- can warm-transfer to you for pricing exceptions or complaints.
+| Flow | Trigger |
+|---|---|
+| `first_call` | Day 1 after email 1, or first touch for leads with no email |
+| `follow_up` | Day 5, and after audit-page views |
+| `walkthrough_close` | Engaged leads, "call me" replies |
+| `inbound_line` | Anyone calling our number |
+| `onboarding_verification` | New clients |
+| `client_checkin` | Day 30 / 90 / before renewal |
 
 **Plan:**
-- The Start plan ($0/month, $0.14/min) is enough at pilot volume (100 calls a day).
-- Estimated cost: 60 calls a month × 4 minutes ≈ $35.
+- **Start plan** ($0.14/min, 100 calls a day) for the pilot.
+- **Build plan** ($299/mo, $0.12/min, 2,000 calls a day) at scale.
+- **Numbers:** local numbers per metro area at $15/month each, since local caller ID gets answered more.
 
-### Optional: human calls
+**Cost at 1,000 leads a week:**
+- about 2,000 dials a week, 30% connect, 3 minutes average ≈ 1,800 connected minutes ≈ **$220-250 a week on Build**;
+- plus attempt fees (about $0.015 per dial, scope disputed [S]).
 
-In France, and to verified US business landlines, a human (you or a virtual assistant) calling after email 2 is lawful with the right safeguards:
-- US: exclude California and Washington, keep an internal do-not-call list, identify yourself;
-- France: B2B calling hours.
+## 9. Email infrastructure and volume
 
-Test it only if the email numbers stall.
-
-### Optional: direct mail
-
-For top-priority leads with no email address, a postcard with the before/after card and a QR code to the audit page. At about $0.70-1.50 per card via a print-and-mail API (Lob or similar; pricing unverified), it's lawful everywhere, arrives with no deliverability problems, and matches the visual idea perfectly.
-
-**Test:** 200 cards in month 2.
-
-## 9. Infrastructure and volume
-
-| Volume | Inboxes | Domains | Sending platform | Stack cost/month |
+| Volume | Inboxes | Domains | Platform | Cost per month |
 |---|---|---|---|---|
-| Pilot: 250-500 prospects a week | 15 | 5 | Instantly Hypergrowth ($97) or Smartlead Pro ($94) | ~$300 |
-| Scale: 1,000 prospects a week | 30 | 10 | Same | ~$600 |
+| Pilot, 250-500 leads a week | 15 | 5 | Instantly Hypergrowth ($97) or Smartlead Pro ($94) | ~$300 + Bland minutes |
+| Scale, 1,000 leads a week | 30 | 10 | Same | ~$600 + Bland minutes |
 
-**Mailbox setup:**
-- Mailboxes from Zapmail or Premium Inboxes (Google), plus a Microsoft provider for redundancy, at about $3-3.50 per inbox.
-- SPF, DKIM and DMARC (`p=none`, then `quarantine`) on every domain.
+**Mailboxes:**
+- Zapmail or Premium Inboxes (Google), plus a Microsoft-based provider, at about $3-3.50 per inbox.
+- SPF, DKIM and DMARC set on every domain.
 - 3 inboxes per domain, 25 cold emails per inbox per day after a 3-week warmup.
 
-**Domains:**
-- secondary domains that look like the main brand (`getmapkeeper.com`, `mapkeeperhq.com`, `trymapkeeper.com`, and so on);
-- each redirects to the main site.
-
-**Monitoring** (weekly, automated):
-
-| Metric | Threshold |
-|---|---|
-| Bounce rate | under 2% |
-| Spam complaints | under 0.1% |
-| Reply rate per inbox | watch for drops |
-| Placement tests | 1 per week |
-
-A domain that crosses a threshold is paused automatically.
+**Domains:** secondary domains that look like the brand (for example `getmapkeeper.com` and `mapkeeperhq.com`), each redirecting to the main site.
 
 ## 10. Funnel model (assumptions to validate in the pilot)
 
-| Stage | Assumption | Per 1,000 prospects |
+| Stage | Assumption | Per 1,000 leads |
 |---|---|---|
-| Delivered | 97% | 970 |
-| Any reply | 3% (Instantly's 2026 average; no local-business benchmark found) | 29 |
-| Positive reply or audit engagement | 1.2% | 12 |
-| Close (checkout) | 25% of positive | 3 |
-| **New clients** | | **~3 per 1,000** |
+| Reached by phone (any of 3 attempts) | 35% | 350 |
+| Conversation of 60 seconds or more with the owner | 40% of reached | 140 |
+| Positive (link sent / call booked) | 15% of conversations | 21 |
+| Positive email replies / audit engagement (no overlap assumed) | 1% | 10 |
+| Close | 25% of positives | ~8 |
+| **New clients** | | **~6-8 per 1,000** |
 
-**What that means:**
-- At 1,000 prospects a week: about 12-13 new clients a month, adding roughly $1,200-1,300 of monthly recurring revenue each month.
-- Variable cost per client won: about $600/month stack ÷ 12.5 ≈ **$48**, plus your time.
+- **At 1,000 leads a week:** about 25-35 new clients a month, adding roughly $2.5-3.5k of monthly recurring revenue each month.
+- **Cost to win a client:** the variable stack (about $600 email + about $1,000 Bland per month) ÷ 30 ≈ **$55**, plus your time.
+- **Caveat:** these are planning assumptions, not benchmarks. No reliable public data exists on AI-call conversion to small businesses. The pilot decides.
 
-This is comfortably below the $300 target, so the model can absorb a close rate half as good.
-
-**Kill or adjust:** see [08-roadmap-budget-kpis.md](08-roadmap-budget-kpis.md).
+**Kill or adjust rules:** see [08-roadmap-budget-kpis.md](08-roadmap-budget-kpis.md).

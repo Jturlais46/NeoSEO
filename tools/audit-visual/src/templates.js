@@ -1,37 +1,24 @@
-// HTML templates for (1) the 1200x630 before/after card and (2) the per-prospect audit page.
-// Deliberately NOT a replica of Google's interface: no Google logos, colors or layout.
-// The card is a neutral "profile summary" so it cannot be mistaken for a Google screenshot.
+// Comparison image (today vs. in 90 days, as Google profile panels) and the per-prospect audit page.
 
 import { STRINGS } from './i18n.js';
+import { PANEL_CSS, panelHTML } from './panel.js';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => (
   { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 export function fontFaces(fontBase) {
-  const inter = [400, 500, 600, 700, 800].map((w) => `@font-face{font-family:Inter;font-weight:${w};font-display:block;src:url(${fontBase}/inter-latin-${w}-normal.woff2) format('woff2')}`);
-  const fraunces = [600, 700].map((w) => `@font-face{font-family:Fraunces;font-weight:${w};font-display:block;src:url(${fontBase}/fraunces-latin-${w}-normal.woff2) format('woff2')}`);
-  return [...inter, ...fraunces].join('\n');
+  const face = (family, file, w) => `@font-face{font-family:${family};font-weight:${w};font-display:block;src:url(${fontBase}/${file}) format('woff2')}`;
+  return [
+    ...[400, 500, 600, 700, 800].map((w) => face('Inter', `inter-latin-${w}-normal.woff2`, w)),
+    ...[600, 700].map((w) => face('Fraunces', `fraunces-latin-${w}-normal.woff2`, w)),
+    ...[400, 500, 700].map((w) => face('Roboto', `roboto-latin-${w}-normal.woff2`, w)),
+  ].join('\n');
 }
 
-function stars(rating) {
-  if (!rating) return '';
-  const full = Math.round(rating);
-  return `<span class="stars" aria-label="${rating} out of 5">${'★'.repeat(full)}<span class="off">${'★'.repeat(5 - full)}</span></span>`;
-}
-
-function ring(score, tone) {
-  const r = 24; const c = 2 * Math.PI * r;
-  const dash = (Math.max(0, Math.min(100, score)) / 100) * c;
-  return `<svg class="ring ${tone}" viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
-    <circle cx="30" cy="30" r="${r}" class="track"/>
-    <circle cx="30" cy="30" r="${r}" class="bar" stroke-dasharray="${dash.toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 30 30)"/>
-    <text x="30" y="35" text-anchor="middle">${score}</text></svg>`;
-}
-
-// Checks that share one fix; the card shows only the biggest loss in each group.
+// Checks that share one fix; show only the biggest loss in each group.
 const ROW_GROUP = { reviewVolume: 'reviews', reviewRecency: 'reviews', rating: 'reviews' };
 
-// The rows shown on the card: the biggest point losses today, paired with their fix.
+// The biggest point losses today, paired with their fix (used by emails and calls via audit.json).
 export function pairedRows(before, proposal, locale, max = 5) {
   const t = STRINGS[locale];
   const seen = new Set();
@@ -45,101 +32,77 @@ export function pairedRows(before, proposal, locale, max = 5) {
       return true;
     })
     .slice(0, max)
-    .map((b) => ({
-      key: b.key,
-      today: b.finding,
-      after: typeof t.fixes[b.key] === 'function' ? t.fixes[b.key](proposal) : t.fixes[b.key],
-    }));
+    .map((b) => ({ key: b.key, today: b.finding, after: t.fixes[b.key](proposal) }));
 }
 
-// Keep the title on one line: shrink long names instead of wrapping into the cards.
-const titleSize = (text) => (text.length <= 48 ? 33 : text.length <= 58 ? 29 : 25);
+export function kpis({ today, after, before, afterScore, locale }) {
+  const t = STRINGS[locale];
+  return [
+    [t.kpi.reviews, t.int(today.review_count ?? 0), t.int(after.review_count)],
+    [t.kpi.rating, today.rating ? t.number(today.rating) : '–', t.number(after.rating)],
+    [t.kpi.photos, t.int(today.photo_count ?? 0), `${t.int(after.photo_count)}+`],
+    [t.kpi.replies, `${Math.round((today.owner_reply_rate ?? 0) * 100)}%`, '100%'],
+    [t.kpi.score, `${before.score}`, `${afterScore.score}`],
+  ];
+}
 
-const CARD_CSS = `
-:root{--ink:#14261F;--muted:#5E6E67;--paper:#F6F2EA;--card:#FFFFFF;--line:#E3DCCF;
-  --brand:#1D6B51;--brand-2:#0F4735;--brand-soft:#E2F0E9;--bad:#A8472A;--bad-soft:#F6E3DB;--star:#D9912B}
+// Standalone page for one panel, screenshotted to before.png / after.png.
+export function panelPage({ state, extra, vertical, locale, fontBase }) {
+  return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8">
+<style>${fontFaces(fontBase)}html,body{margin:0;background:#fff}${PANEL_CSS}</style></head>
+<body>${panelHTML({ state, extra, vertical, locale })}</body></html>`;
+}
+
+const COMP_CSS = `
+:root{--ink:#14261F;--muted:#5E6E67;--paper:#F6F2EA;--line:#E3DCCF;--brand:#1D6B51;--brand-2:#0F4735}
 *{box-sizing:border-box}
-html,body{margin:0;width:1200px;height:630px;background:var(--paper);color:var(--ink);
-  font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-.frame{width:1200px;height:630px;padding:34px 44px 24px;display:flex;flex-direction:column}
-.top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
-.title{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:var(--title-size,33px);line-height:1.1;letter-spacing:-.01em;max-width:900px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brandmark{display:flex;align-items:center;gap:8px;font-weight:800;font-size:17px;color:var(--brand-2);white-space:nowrap}
-.brandmark .pin{width:22px;height:22px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--brand);position:relative}
-.brandmark .pin:after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--paper)}
-.meta{font-size:14px;color:var(--muted);margin-top:6px}
-.cols{flex:1;display:grid;grid-template-columns:1fr 56px 1fr;margin-top:18px;min-height:0}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 22px 16px;display:flex;flex-direction:column;min-height:0}
-.card.after{border:2px solid var(--brand);box-shadow:0 12px 28px rgba(15,71,53,.12)}
-.label{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.after .label{color:var(--brand)}
-.name{font-size:21px;font-weight:700;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sub{font-size:14px;color:var(--muted);margin-top:3px;display:flex;gap:8px;align-items:center;white-space:nowrap;overflow:hidden}
-.stars{color:var(--star);letter-spacing:1px}.stars .off{color:#DDD5C7}
-.photos{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin:12px 0 10px}
-.tile{height:40px;border-radius:7px;display:flex;align-items:flex-end;padding:3px 5px;font-size:9.5px;font-weight:700;color:#fff;overflow:hidden;line-height:1.05}
-.before .tile{background:#DCD5C8;justify-content:center;align-items:center}
-.before .tile svg{opacity:.55}
-.before .tile.empty{background:repeating-linear-gradient(45deg,#F3EEE5 0 6px,#EAE3D6 6px 12px)}
-.after .tile{background:linear-gradient(140deg,#2E8C69,#0F4735)}
-.after .tile:nth-child(2n){background:linear-gradient(140deg,#D9912B,#A45F12)}
-.after .tile:nth-child(3n){background:linear-gradient(140deg,#4E7A8C,#23485A)}
-ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
-li{display:flex;gap:9px;align-items:center;font-size:14.5px;line-height:1.25;height:36px}
-li span.t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.ic{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800}
-.before .ic{background:var(--bad-soft);color:var(--bad)}
-.after .ic{background:var(--brand-soft);color:var(--brand)}
-.score{margin-top:auto;display:flex;align-items:center;gap:12px;padding-top:10px;border-top:1px dashed var(--line)}
-.score .k{font-size:13px;font-weight:700}.score .n{font-size:12px;color:var(--muted)}
-.ring .track{fill:none;stroke:#EFE9DE;stroke-width:6}.ring .bar{fill:none;stroke-width:6;stroke-linecap:round}
-.ring.bad .bar{stroke:var(--bad)}.ring.good .bar{stroke:var(--brand)}
-.ring text{font:800 17px Inter,sans-serif;fill:var(--ink)}
-.arrow{display:grid;place-items:center}
-.foot{font-size:11.5px;color:var(--muted);margin-top:12px}
+html,body{margin:0;width:1200px;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.frame{padding:30px 44px 36px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;height:74px}
+.title{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:var(--ts,32px);line-height:1.1;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sub{font-size:14px;color:var(--muted);margin-top:6px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:17px;color:var(--brand-2);white-space:nowrap}
+.brand .pin{width:22px;height:22px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--brand);position:relative}
+.brand .pin:after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--paper)}
+.cols{display:grid;grid-template-columns:540px 540px;gap:32px;margin-top:14px;align-items:start}
+.lbl{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:6px 12px;border-radius:999px;background:#E6E0D4;color:#4A5751;margin-bottom:10px}
+.lbl.after{background:var(--brand);color:#fff}
+.shot{width:540px;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.08),0 12px 32px rgba(20,38,31,.12)}
+.shot.after{outline:3px solid var(--brand)}
+.shot img{display:block;width:540px;height:auto}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:26px}
+.k{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.k .l{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.k .v{margin-top:6px;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.k .v b{color:var(--brand);font-weight:800}
+.k .v span{color:var(--muted);font-weight:500;margin:0 6px}
+/* card variant: fixed 1200x630, panels cropped to photo bottom + name + rating */
+body.card{height:630px;overflow:hidden}
+.card .frame{padding:26px 44px 0}
+.card .cols{margin-top:10px}
+.card .shot{height:370px}
+.card .shot img{margin-top:-120px}
+.card .kpis{margin-top:18px}
+.card .k{padding:10px 14px}
+.card .k .v{font-size:20px;margin-top:2px}
 `;
 
-export function cardHTML({ data, before, after, brand, locale = 'en', fontBase }) {
-  const t = STRINGS[locale];
-  const p = data.prospect; const pr = data.proposal || {};
-  const rows = pairedRows(before, pr, locale);
-  const n = p.photo_count ?? 0;
-  const photoIcon = '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z M4 15l5-5 4 4 3-3 4 4" fill="none" stroke="#6F6555" stroke-width="1.8" stroke-linejoin="round"/></svg>';
-  const beforeTiles = Array.from({ length: 6 }, (_, i) => (i < Math.min(n, 6)
-    ? `<div class="tile">${photoIcon}</div>` : '<div class="tile empty"></div>')).join('');
-  const shots = (pr.photo_shot_list || []).slice(0, 6);
-  const afterTiles = Array.from({ length: 6 }, (_, i) => `<div class="tile">${esc(shots[i] || '')}</div>`).join('');
-  const ratingLine = p.rating ? `${stars(p.rating)} ${p.rating.toFixed(1)} · ${t.reviews(p.review_count ?? 0)}` : t.noRating;
-  const afterCats = [pr.primary_category, ...(pr.secondary_categories || []).slice(0, 2)].filter(Boolean).join(' · ');
+const titleSize = (text) => (text.length <= 56 ? 32 : text.length <= 66 ? 28 : 24);
 
+export function comparisonHTML({ data, brand, locale, fontBase, beforeSrc, afterSrc, kpiRows, months, variant = 'full' }) {
+  const t = STRINGS[locale];
+  const p = data.prospect;
+  const headline = t.headline(p.business_name);
   return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8">
-<style>${fontFaces(fontBase)}${CARD_CSS}</style></head><body>
-<div class="frame">
-  <div class="top">
-    <div style="min-width:0"><div class="title" style="--title-size:${titleSize(t.cardTitle(p.business_name))}px">${esc(t.cardTitle(p.business_name))}</div>
-      <div class="meta">${esc(t.preparedFor(p.city, data.audit_date))}</div></div>
-    <div class="brandmark"><span class="pin"></span>${esc(brand.name)}</div>
-  </div>
+<style>${fontFaces(fontBase)}${COMP_CSS}</style></head><body class="${variant}"><div class="frame">
+  <div class="top"><div style="min-width:0"><div class="title" style="--ts:${titleSize(headline)}px">${esc(headline)}</div>
+    <div class="sub">${esc(t.subline(brand.name, p.city))}</div></div>
+    <div class="brand"><span class="pin"></span>${esc(brand.name)}</div></div>
   <div class="cols">
-    <section class="card before">
-      <div class="label">${esc(t.today)}</div>
-      <div class="name">${esc(p.business_name)}</div>
-      <div class="sub">${ratingLine} · ${esc(p.primary_category || '')}</div>
-      <div class="photos">${beforeTiles}</div>
-      <ul>${rows.map((r) => `<li><span class="ic">✕</span><span class="t">${esc(r.today)}</span></li>`).join('')}</ul>
-      <div class="score">${ring(before.score, 'bad')}<div><div class="k">${esc(t.healthScore)}</div><div class="n">${esc(t.today)}</div></div></div>
-    </section>
-    <div class="arrow"><svg width="36" height="36" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-6 6 6-6 6" fill="none" stroke="#1D6B51" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <section class="card after">
-      <div class="label">${esc(t.afterSetup(brand.name))}</div>
-      <div class="name">${esc(p.business_name)}</div>
-      <div class="sub">${ratingLine} · ${esc(afterCats)}</div>
-      <div class="photos">${afterTiles}</div>
-      <ul>${rows.map((r) => `<li><span class="ic">✓</span><span class="t">${esc(r.after)}</span></li>`).join('')}</ul>
-      <div class="score">${ring(after.score, 'good')}<div><div class="k">${esc(t.healthScore)}</div><div class="n">${esc(t.afterNote)}</div></div></div>
-    </section>
+    <div><div class="lbl">${esc(t.today)}</div><div class="shot"><img src="${esc(beforeSrc)}" alt=""></div></div>
+    <div><div class="lbl after">${esc(t.inDays(brand.name, months))}</div><div class="shot after"><img src="${esc(afterSrc)}" alt=""></div></div>
   </div>
-  <div class="foot">${esc(t.disclaimer)}</div>
+  <div class="kpis">${kpiRows.map(([l, a, b]) => `<div class="k"><div class="l">${esc(l)}</div><div class="v">${esc(a)}<span>→</span><b>${esc(b)}</b></div></div>`).join('')}</div>
 </div></body></html>`;
 }
 
@@ -147,19 +110,19 @@ export function cardHTML({ data, before, after, brand, locale = 'en', fontBase }
 
 const PAGE_CSS = `
 :root{--ink:#14261F;--ink-2:#3C4D46;--muted:#5E6E67;--paper:#F6F2EA;--card:#FFFFFF;--line:#E3DCCF;
-  --brand:#1D6B51;--brand-2:#0F4735;--brand-soft:#E2F0E9;--bad:#A8472A;--bad-soft:#F6E3DB;--bar-other:#B9B0A0;--focus:#D9912B}
+  --brand:#1D6B51;--brand-2:#0F4735;--brand-soft:#E2F0E9;--bad:#A8472A;--bar-other:#B9B0A0;--focus:#D9912B}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#EEF3F0;--ink-2:#C9D4CF;--muted:#9AABA3;--paper:#0F1714;--card:#17221E;--line:#2A3833;
-  --brand:#4CC095;--brand-2:#8FDDBF;--brand-soft:#173A2E;--bad:#E48B6C;--bad-soft:#3A221A;--bar-other:#5C6862}}
+  --brand:#4CC095;--brand-2:#8FDDBF;--brand-soft:#173A2E;--bad:#E48B6C;--bar-other:#5C6862}}
 :root[data-theme="dark"]{--ink:#EEF3F0;--ink-2:#C9D4CF;--muted:#9AABA3;--paper:#0F1714;--card:#17221E;--line:#2A3833;
-  --brand:#4CC095;--brand-2:#8FDDBF;--brand-soft:#173A2E;--bad:#E48B6C;--bad-soft:#3A221A;--bar-other:#5C6862}
+  --brand:#4CC095;--brand-2:#8FDDBF;--brand-soft:#173A2E;--bad:#E48B6C;--bar-other:#5C6862}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-main{max-width:880px;margin:0 auto;padding:40px 16px 64px}
+main{max-width:1000px;margin:0 auto;padding:40px 16px 64px}
 .eyebrow{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--brand)}
 h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(30px,5vw,46px);line-height:1.08;letter-spacing:-.015em;margin:10px 0 12px}
 h2{font-family:Fraunces,Georgia,serif;font-size:26px;line-height:1.2;margin:0 0 6px}
 h3{font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:18px 0 6px}
-.lede{font-size:18px;color:var(--ink-2);max-width:680px;margin:0}
+.lede{font-size:18px;color:var(--ink-2);max-width:720px;margin:0}
 .ctas{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0 8px}
 .btn{display:inline-block;padding:14px 22px;border-radius:12px;font-weight:700;text-decoration:none;border:2px solid var(--brand)}
 .btn.primary{background:var(--brand);color:#fff}.btn.ghost{color:var(--brand)}
@@ -167,7 +130,17 @@ h3{font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute
 :root[data-theme="dark"] .btn.primary{color:#0F1714}
 .btn:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .note{font-size:14px;color:var(--muted)}
-.hero-img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid var(--line);margin:28px 0 8px}
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:28px 0 8px;align-items:start}
+@media (max-width:720px){.panels{grid-template-columns:1fr}}
+.pl{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:6px 12px;border-radius:999px;background:var(--line);color:var(--ink-2);margin-bottom:10px}
+.pl.after{background:var(--brand);color:#fff}
+.panels img{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.08),0 12px 32px rgba(20,38,31,.12);background:#fff}
+.panels .after img{outline:3px solid var(--brand)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:20px}
+.k{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.k .l{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.k .v{margin-top:6px;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.k .v b{color:var(--brand);font-weight:800}.k .v span{color:var(--muted);margin:0 6px}
 section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;margin-top:20px}
 section > p{margin:0 0 12px;color:var(--ink-2)}
 table{width:100%;border-collapse:collapse;font-size:15px}
@@ -183,11 +156,11 @@ blockquote{margin:0;padding:12px 16px;border-left:3px solid var(--line);color:va
 .reply{margin-top:10px;padding:14px 16px;border-radius:12px;background:var(--brand-soft)}
 .reply .lbl{font-size:12px;font-weight:700;color:var(--brand-2);margin-bottom:4px}
 .bars{display:flex;flex-direction:column;gap:8px;margin-top:8px}
-.bar-row{display:grid;grid-template-columns:minmax(90px,200px) 1fr 52px;gap:10px;align-items:center;font-size:14px}
+.bar-row{display:grid;grid-template-columns:minmax(90px,220px) 1fr 56px;gap:10px;align-items:center;font-size:14px}
 .bar-row .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bar-track{height:14px}
 .bar-fill{height:14px;border-radius:0 4px 4px 0;background:var(--bar-other);min-width:2px}
-.bar-row.you .bar-fill{background:var(--brand)}.bar-row.you .nm{font-weight:800}
+.bar-row.you .bar-fill{background:var(--bad)}.bar-row.you .nm{font-weight:700}
+.bar-row.after .bar-fill{background:var(--brand)}.bar-row.after .nm{font-weight:800}
 .bar-row .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-2)}
 ol.steps{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
 ol.steps li b{display:block;margin-bottom:2px}
@@ -197,23 +170,25 @@ footer{margin-top:36px;font-size:13px;color:var(--muted)}
 footer a{color:var(--muted)}
 `;
 
-export function auditPageHTML({ data, before, after, brand, locale = 'en', fontBase, cardSrc }) {
+export function auditPageHTML({ data, before, afterScore, today, after, brand, locale = 'en', fontBase, beforeSrc, afterSrc, kpiRows, months }) {
   const t = STRINGS[locale]; const tp = t.page;
   const p = data.prospect; const pr = data.proposal || {};
   const links = data.links || {};
-  const label = (key) => t.checkLabels[key] || key;
-  const afterByKey = Object.fromEntries(after.breakdown.map((b) => [b.key, b.points]));
+  const afterByKey = Object.fromEntries(afterScore.breakdown.map((b) => [b.key, b.points]));
 
-  const scoreRows = before.breakdown.map((b) => `<tr><td>${esc(label(b.key))}${b.finding ? `<div class="note gap">${esc(b.finding)}</div>` : ''}</td>
+  const scoreRows = before.breakdown.map((b) => `<tr><td>${esc(t.checkLabels[b.key] || b.key)}${b.finding ? `<div class="note gap">${esc(b.finding)}</div>` : ''}</td>
     <td class="num">${b.points} / ${b.weight}</td><td class="num">${afterByKey[b.key]} / ${b.weight}</td></tr>`).join('');
 
-  const comps = [{ name: p.business_name, review_count: p.review_count ?? 0, you: true }, ...(data.competitors || [])]
-    .sort((a, b) => b.review_count - a.review_count);
+  const comps = [
+    { name: `${tp.you}`, review_count: today.review_count ?? 0, cls: 'you' },
+    { name: `${tp.youAfter}`, review_count: after.review_count, cls: 'after' },
+    ...(data.competitors || []).map((c) => ({ ...c, cls: '' })),
+  ].sort((a, b) => b.review_count - a.review_count);
   const maxReviews = Math.max(1, ...comps.map((c) => c.review_count));
-  const bars = comps.map((c) => `<div class="bar-row${c.you ? ' you' : ''}" title="${esc(c.name)}: ${c.review_count}">
-      <span class="nm">${esc(c.you ? `${tp.you} (${c.name})` : c.name)}</span>
-      <div class="bar-track"><div class="bar-fill" style="width:${((c.review_count / maxReviews) * 100).toFixed(1)}%"></div></div>
-      <span class="v">${c.review_count}</span></div>`).join('');
+  const bars = comps.map((c) => `<div class="bar-row ${c.cls}" title="${esc(c.name)}: ${c.review_count}">
+      <span class="nm">${esc(c.name)}</span>
+      <div><div class="bar-fill" style="width:${((c.review_count / maxReviews) * 100).toFixed(1)}%"></div></div>
+      <span class="v">${t.int(c.review_count)}</span></div>`).join('');
 
   const r = pr.sample_review_reply;
   return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8">
@@ -229,12 +204,17 @@ export function auditPageHTML({ data, before, after, brand, locale = 'en', fontB
     <a class="btn ghost" href="${esc(links.booking || '#')}">${esc(tp.ctaCall)}</a>
   </div>
   <div class="note">${esc(tp.ctaNote)}</div>
-  <img class="hero-img" src="${esc(cardSrc)}" width="1200" height="630" alt="${esc(t.cardTitle(p.business_name))}">
 
-  <section><h2>${esc(tp.scoreH)}: ${before.score} → ${after.score}</h2><p>${esc(tp.scoreLede)}</p>
+  <div class="panels">
+    <div><div class="pl">${esc(t.today)}</div><img src="${esc(beforeSrc)}" alt="${esc(p.business_name)}: ${esc(t.today)}"></div>
+    <div class="after"><div class="pl after">${esc(t.inDays(brand.name, months))}</div><img src="${esc(afterSrc)}" alt="${esc(p.business_name)}: ${esc(t.inDays(brand.name, months))}"></div>
+  </div>
+  <div class="kpis">${kpiRows.map(([l, a, b]) => `<div class="k"><div class="l">${esc(l)}</div><div class="v">${esc(a)}<span>→</span><b>${esc(b)}</b></div></div>`).join('')}</div>
+
+  <section><h2>${esc(tp.scoreH)}: ${before.score} → ${afterScore.score}</h2><p>${esc(tp.scoreLede)}</p>
     <table><thead><tr><th>${esc(tp.colCheck)}</th><th class="num">${esc(tp.colToday)}</th><th class="num">${esc(tp.colAfter)}</th></tr></thead>
     <tbody>${scoreRows}</tbody>
-    <tfoot><tr><td></td><td class="num">${before.score} / 100</td><td class="num">${after.score} / 100</td></tr></tfoot></table>
+    <tfoot><tr><td></td><td class="num">${before.score} / 100</td><td class="num">${afterScore.score} / 100</td></tr></tfoot></table>
   </section>
 
   <section><h2>${esc(tp.proposalH)}</h2>
@@ -259,6 +239,6 @@ export function auditPageHTML({ data, before, after, brand, locale = 'en', fontB
     <div class="ctas"><a class="btn primary" href="${esc(links.checkout || '#')}">${esc(tp.ctaYes(brand.price))}</a></div>
   </section>
 
-  <footer><p>${esc(t.disclaimer)}</p><p><a href="${esc(links.optout || '#')}">${esc(tp.stopLink)}</a></p><p>${esc(tp.footer(brand.legal))}</p></footer>
+  <footer><p>${esc(tp.footer(brand.legal))}</p><p><a href="${esc(links.optout || '#')}">${esc(tp.stopLink)}</a></p></footer>
 </main></body></html>`;
 }

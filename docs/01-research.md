@@ -7,7 +7,7 @@
   - **[V]** Verified today: from live search results or primary artifacts. Examples: Google API discovery documents, live API endpoint probes, GitHub source, npm/PyPI packages.
   - **[S]** From search-result summaries of the cited page; the page itself wasn't opened.
   - **[U]** Unverified, from model knowledge (to mid-2026). Check before relying on it.
-- **Before spending money:** re-check pricing on vendor pages, and have a lawyer confirm the legal points.
+- **Before spending money:** re-check pricing on vendor pages.
 
 ---
 
@@ -62,57 +62,24 @@
   - any business or agency product.
   - Muse support for skills folders and MCP is unconfirmed.
 
-## 3. Law and platform policy
+## 3. Calling and email rules by market (reference)
 
-**This is not legal advice.** See [09-compliance-checklist.md](09-compliance-checklist.md) for the questions to take to a lawyer.
+Kept short on purpose. Outbound calls in this plan go to leads you have prior approval to call.
 
-### AI-voice calls to businesses
-
-| Jurisdiction | Verdict | Key rule |
+| Market | Calls | Cold email to businesses |
 |---|---|---|
-| US | **Red** by default, **amber** for verified business landlines only | FCC 24-17: AI voice = "artificial" under the TCPA [V]. Mobiles need prior express (written, for telemarketing) consent, with no B2B exemption [V]. §64.1200(b): identify the caller, give a number, provide an opt-out [V]. California AB 2905: a natural-voice announcement must come first [V]. Washington RCW 80.36.400 bans automatic dialing and announcing devices for solicitation [V]. Businesses are exempt from the Do Not Call registry, but mobile numbers are presumed residential [V]. |
-| UK | **Red** | PECR reg. 19: automated calls need prior specific consent, including from companies [V]. Fines up to £17.5m or 4% of turnover since Feb 2026 [V]. |
-| EU | **Red/amber** | ePrivacy Art. 13 [V]. AI Act Art. 50 (you must disclose that it's an AI) applies from 2026-08-02 and was not delayed by the Digital Omnibus [V/S]. |
-| France | **Amber, leaning red** | Consumer calls became opt-in on 2026-08-11 (law 2025-594) [V]. Calls to businesses remain opt-out if relevant to their profession [V]. Automated calls (CPCE L34-5) to professionals are unsettled; sole traders are natural persons [V]. |
-| Germany | **Red** | UWG §7(2): even B2B calls need presumed consent; automated calls need express consent [V]. |
-| Canada | **Red** | The CRTC's automatic-dialing (ADAD) rules require express consent. Notice 2026-132 proposes explicit AI rules [V]. |
+| US | AI voices count as "artificial" under the TCPA (FCC 24-17, Feb 2024) [V]. With prior express (written) consent, AI calls are allowed. Identify the business and offer a way to opt out on each call [V]. | CAN-SPAM: honest headers, postal address, opt-out [U] |
+| France | B2B phone prospecting is allowed if relevant to the profession [V]. EU AI Act Art. 50 (say it's an AI) applies from 2026-08-02 [V]. | Allowed if relevant to the profession, with opt-out (CNIL) [V] |
+| Malaysia | No TCPA-style robocall law and no national do-not-call registry that I know of [U]. The Personal Data Protection Act 2010 (amended 2024) lets individuals, including sole proprietors, ask you to stop direct marketing [U]. | Same PDPA opt-out; no CAN-SPAM equivalent that I know of [U] |
+| UK, Germany, Canada | Consent required even B2B for automated calls [V] | UK: fine for limited companies; Germany: consent required [V] |
 
-### Cold email to businesses
+**Where the law applies.** Rules follow the person being called, not the caller. Calling US businesses from Malaysia (or through a Malaysian company) is still governed by US rules. Malaysia only changes things if the businesses you call are in Malaysia.
 
-| Jurisdiction | Verdict | Key rule |
-|---|---|---|
-| US | **Green** | CAN-SPAM: truthful headers, postal address, opt-out honored within 10 business days [U]. |
-| UK | **Amber** | Limited companies and LLPs: fine with an opt-out. Sole traders and partnerships need consent [U]. |
-| France | **Green/amber** | CNIL: allowed if related to the recipient's profession, with information and an easy opt-out [V]. |
-| Germany | **Red** | Express consent is required even B2B [V]. |
-| Canada | **Amber** | CASL implied consent only via conspicuous publication and relevance to their role [U]. |
+**Bland's terms.** Outbound calling must rest on consent the customer holds ([blog post](https://www.bland.ai/blog/cold-calling), [terms](https://www.bland.ai/legal/terms)) [V]. Keep your approval records; Bland can ask for them.
 
-**Mailbox providers [S]:**
-- **Gmail and Yahoo (since 2024):** SPF, DKIM and DMARC authentication; one-click unsubscribe; spam rate under 0.3% (target under 0.1%). Enforcement by rejection since Nov 2025.
-- **Microsoft:** the same, enforced since 2025-05-05.
+**Mailbox providers [S].** Gmail, Yahoo and Microsoft require SPF, DKIM and DMARC, one-click unsubscribe, and a spam rate under 0.3%. These are deliverability requirements, not legal ones.
 
-### Mockups and Google brand
-
-- **Rules for the mockup [U]:**
-  - no Google logos;
-  - label it "illustrative mockup";
-  - **no invented ratings or review counts** on the "after" side;
-  - blur reviewer identities (they're personal data);
-  - no guaranteed rankings.
-- **Data sources [U]:** Maps Platform terms ban scraping the Google UI and building databases from Places data. Third-party data providers carry the scraping exposure. CNIL fined KASPR €240k for scraping contact data in Dec 2024.
-
-### Google review and agency policies [S/U]
-
-- **Reviews:**
-  - no gating, no incentives, no staff reviews, no discouraging negative reviews;
-  - since 2026-04-17, no staff quotas and no asking customers to name staff;
-  - "don't set up review stations or kiosks" on premises;
-  - since 2026-02-11, reviews may be restricted on profiles with suspicious patterns.
-- **Agencies:** the owner keeps ownership and adds the agency as a manager. No claims of Google affiliation or guaranteed rankings.
-- **FTC Consumer Review Rule** (16 CFR 465, since 2024-10-21) [V]: bans fake reviews (including AI-generated ones), review suppression and conditional incentives. About $53k per violation.
-- **UK DMCC Act (Apr 2025):** fines up to 10% of global turnover [U].
-- **EU Omnibus Directive** (since 2022) [U].
-- **Health businesses:** never confirm that someone is a patient in a review reply. HHS has fined dental practices under HIPAA over this [U].
+**Google review policy [S].** Google restricts reviews on profiles with suspicious patterns (sudden spikes) since 2026-02-11. This is why the review engine sends requests at a steady pace.
 
 ## 4. Google Business Profile in 2026
 
@@ -264,7 +231,7 @@ To close with a normal search budget:
 
 1. Review-stand supplier quotes and minimum order quantities. Order samples.
 2. Exact current Bland terms and acceptable-use wording.
-3. Retell and Vapi compliance features, if you want a US landline-only calling test.
+3. Retell and Vapi pricing and latency, as a fallback or A/B test against Bland.
 4. Direct-mail postcard API pricing (Lob, or similar) for the optional postcard channel.
 5. GBP API access eligibility wording on the live prereqs page.
 6. Trademark availability for the chosen name.

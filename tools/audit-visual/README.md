@@ -1,69 +1,77 @@
 # audit-visual
 
-This tool renders the per-prospect **before/after card** (PNG) and the **audit page** (HTML) from one JSON file. It also writes `audit.json`: the facts that the emails and calls quote, so every channel says the same thing.
+This tool renders each prospect's Google Business Profile as it looks **today**, next to how it will look **in 90 days** with us. Both are shown as Google Maps profile panels.
 
-![sample](../../docs/assets/sample-card-en.png)
+From one JSON file per prospect it produces:
+- the two panel images;
+- a comparison image;
+- a 1200×630 email card;
+- the personal audit page.
+
+It also writes `audit.json`, which holds the numbers that the emails and Bland calls quote.
+
+![card](../../docs/assets/sample-card-en.png)
+
+Full comparison: [docs/assets/sample-comparison-en.png](../../docs/assets/sample-comparison-en.png)
 
 ## Run it
 
 ```bash
 cd tools/audit-visual
-npm install          # uses the preinstalled Chromium via Playwright
-npm test             # scoring and honesty rules
-npm run sample       # renders the two fictional samples into out/
-node src/render.js path/to/prospect.json --out out [--brand brand.json] [--locale en|fr]
+npm install
+npm test
+npm run sample       # renders the two demo cafés into out/
+node src/render.js path/to/prospect.json --out out [--months 3] [--locale en|fr] [--brand brand.json]
 ```
 
-For each prospect, it writes these files to `out/<slug>/`:
+## Output (per prospect, in `out/<slug>/`)
 
 | File | Use |
 |---|---|
-| `card.png` (1200×630) | Inline image in a thread after a reply; postcard front |
-| `card@2x.png` | Hero image on the audit page |
-| `index.html` | Personal audit page (noindex). Deploy to `/r/<token>` |
-| `audit.json` | Scores, top findings and card rows, for email and call personalization |
+| `before.png` | "Today" panel. Either a real capture, or a recreation built from the listing data. |
+| `after.png` | The profile in N days: fixed categories, description, hours and website; new photos and posts; projected review count and rating; illustrative reviews with owner replies |
+| `comparison.png` | Both panels side by side with the key numbers. Use it for the reply to an interested prospect, or on a postcard. |
+| `card.png` (1200×630) | Email thumbnail and link preview |
+| `index.html` | Personal audit page. Deploy it to `/r/<token>`. |
+| `audit.json` | Scores, review count and rating (today and projected), top findings |
 
-## How scoring works (`src/score.js`)
+## Real screenshots for "today"
 
-There are 13 weighted checks, adding up to 100.
+`src/capture.js` opens the business on Google Maps and captures the actual place panel at 816px wide, the same size as our panels:
 
-| Check | Weight | Why |
-|---|---|---|
-| Claimed | 15 | Unclaimed = you can't reply or control edits |
-| Primary category | 10 | Strongest lever on the profile itself (Whitespark 2026) |
-| Photos | 10 | Affects conversion |
-| Review count vs. competitors | 10 | Ranking factor. Benchmarked against the median of the businesses shown next to you |
-| Review recency | 10 | Steady, recent reviews count more than a large stale total (Sterling Sky) |
-| Reply rate | 10 | Affects conversion and trust. Not a ranking factor |
-| Secondary categories, description, hours, website, services, rating, recent updates | 5 each | Completeness and conversion. Posting frequency has no measured effect on ranking |
+```bash
+node src/capture.js --place-id ChIJ... --out shots/ember-today.png
+node src/capture.js --query "Ember & Oak Coffee Riverton" --out shots/ember-today.png
+```
 
-**Honesty rules** (covered by tests):
+Set `"screenshot": "shots/ember-today.png"` on the prospect. `render.js` then uses the capture instead of the recreation.
 
-- **What the "after" score changes.** It counts only what setup controls:
-  - claiming the profile;
-  - categories;
-  - completeness;
-  - photos;
-  - replies;
-  - one update.
-- **What it never touches.** Rating, review count and review recency stay as they are.
-- **What the visuals avoid.** No Google logos, and no copy of Google's interface.
-- **What's always on the visuals.** "Illustrative mockup, not affiliated with Google, rankings not guaranteed".
+Two limits:
+- **Not tested against live Google here.** This sandbox blocks google.com. The flow is tested against a local page. The selector it relies on (`div[role="main"][aria-label]`) is the Maps place panel, and it may need a tweak on the first live run.
+- **Volume needs a hosted browser.** Google throttles repeated headless traffic from one IP. Beyond a few dozen captures a day, run them through a hosted browser or screenshot service.
+
+## Projection model (`src/projection.js`)
+
+**Reviews per month:**
+- Default: close the gap to the median of the 3 nearby competitors over the window, bounded at 8-30 a month.
+- Override per prospect with `proposal.projected_reviews_per_month`.
+
+**Rating:** new reviews are mostly 5 stars (85% 5★, 10% 4★, 5% lower). The projected rating is the real average of the combined distribution, so the rating, the stars and the review-summary bars always agree. It never goes below today's rating.
+
+**Photos:** 20 at setup, plus 8 a month.
+
+**Profile score:** recalculated on the projected profile with the same 13 checks (`src/score.js`).
 
 ## Input format
 
-See [samples/trattoria-olivo.json](samples/trattoria-olivo.json). Three parts:
+See [samples/ember-oak-coffee.json](samples/ember-oak-coffee.json):
 
-| Part | Where it comes from |
-|---|---|
-| `prospect` | Listing data |
-| `competitors` | Up to 3 nearby businesses |
-| `proposal` | Written by the `gbp-audit` skill |
+- **`prospect`:** listing data, plus the fields the panel shows: `address`, `phone_display`, `price_level`, `hours_today`, `photos`, `recent_reviews`. Optionally `rating_distribution` and `screenshot`.
+- **`competitors`:** up to 3 nearby businesses.
+- **`proposal`:** written by the `gbp-audit` skill. It holds categories, description, services, `photos`, `posts`, `illustrative_reviews`, `hours_today`, `website_url`, and optionally `projected_reviews_per_month`.
 
-To add a language, copy the `en` block in [src/i18n.js](src/i18n.js).
+**Photos:** use the business's own photos (from its listing, website or Instagram) for both sides. The demo uses CC0 sample images from scikit-image, because this sandbox can't download images.
 
-## Production notes
+**Languages:** English and French. To add a language, copy the `en` block in [src/i18n.js](src/i18n.js).
 
-- **Where to run it.** At volume, run the same code on Cloudflare Browser Rendering (about $5/month at around 4,000 renders), or on the n8n host.
-- **Brand settings.** Change the name, price and legal line in `brand.json` once the name is final.
-- **Fonts.** Inter and Fraunces, both under the SIL Open Font License, bundled through @fontsource.
+**Fonts:** Roboto (the panels), Inter and Fraunces (the frame), all under the Open Font License and bundled through @fontsource.

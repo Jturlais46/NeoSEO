@@ -1,23 +1,18 @@
-# Séquence de prospection (France, français)
+# Séquence email (France, français)
 
-**Règles.** Mêmes règles que la version anglaise :
-- moins de 90 mots ;
-- texte brut ;
-- aucun lien dans l'email 1 ;
-- vouvoiement ;
-- signature avec le vrai nom du fondateur.
+Les emails tournent en parallèle des appels Bland (voir [docs/04-outbound-engine.md](../../docs/04-outbound-engine.md), section 6).
 
-**Base légale.** Prospection B2B par email autorisée si l'offre est en rapport avec la profession du destinataire (CNIL). Chaque email doit :
-- informer de l'origine des données ;
-- offrir une opposition simple.
-
-Formulation à valider par un avocat.
+**Règles (délivrabilité)**
+- Moins de 90 mots.
+- Texte brut.
+- Email 1 sans lien ni image.
+- Vouvoiement.
+- Signature avec le vrai nom du fondateur.
 
 **Pied de page (chaque email)**
 ```
 {{sender_name}}, {{company}}
 {{postal_address}}
-Vos coordonnées proviennent de votre fiche Google publique et de votre site. Vos droits : {{privacy_url}}
 Pas intéressé ? Répondez « stop » et je ne vous écrirai plus.
 ```
 
@@ -25,9 +20,9 @@ Pas intéressé ? Répondez « stop » et je ne vous écrirai plus.
 
 ## Email 1 : J0 (sans lien)
 
-**Objet (test A/B) :**
+**Objet (test A/B)**
 - `{{business_name}} sur Google Maps`
-- `votre fiche Google, en un coup d'œil`
+- `votre fiche Google dans 90 jours`
 
 ```
 Bonjour {{first_name}},
@@ -40,25 +35,25 @@ J'ai regardé la fiche Google de {{business_name}} cette semaine. Trois choses m
 
 {{tailored}}
 
-J'ai préparé une maquette de votre fiche corrigée : catégories, description, plan photo, et même une réponse à votre dernier avis. Voulez-vous que je vous l'envoie ?
+J'ai préparé votre fiche telle qu'elle serait après 90 jours avec nous : environ {{reviews_projected}} avis, de vraies photos, des publications chaque semaine. Voulez-vous que je vous l'envoie ?
 
 {{sender_first_name}}
 ```
 
 ---
 
-## Email 2 : J+3 (un lien)
+## Email 2 : J+3 (visuel et un lien)
 
 **Objet :** même fil (`Re:`)
 
 ```
-Bonjour {{first_name}}, la voici, sans engagement :
+Bonjour {{first_name}}, la voici : {{business_name}} aujourd'hui, et dans 90 jours.
 
-{{audit_url}}
+[card.png]
 
-Vous y verrez votre fiche aujourd'hui, à côté de ce qu'elle serait une semaine après notre intervention, et nos publications du premier mois.
+La version complète, avec votre nouvelle description, vos catégories et vos publications du premier mois : {{audit_url}}
 
-Si elle vous plaît, un bouton « oui » vous attend sur la page. {{price}} HT/mois, sans engagement, et vous restez toujours propriétaire de votre fiche.
+{{price}} HT/mois, sans engagement, et vous restez propriétaire de votre fiche. Un bouton « oui » vous attend sur la page.
 
 {{sender_first_name}}
 ```
@@ -69,16 +64,16 @@ Si elle vous plaît, un bouton « oui » vous attend sur la page. {{price}} HT/m
 
 ### A. En retard sur les avis
 
-**Objet :** `{{review_count}} avis contre {{competitor_1_reviews}}`
+**Objet :** `{{reviews_today}} avis contre {{competitor_1_reviews}}`
 
 ```
 Bonjour {{first_name}},
 
-{{business_name}} a {{review_count}} avis Google. {{competitor_1}} en a {{competitor_1_reviews}}.
+{{business_name}} a {{reviews_today}} avis Google. {{competitor_1}} en a {{competitor_1_reviews}}.
 
-L'écart vient rarement de la qualité : la plupart des clients satisfaits n'y pensent simplement pas. Nous envoyons à chaque client la même courte demande après sa visite, et vous fournissons un présentoir pour le comptoir. Aucune récompense, aucun filtre.
+L'écart vient rarement de la qualité : les clients satisfaits n'y pensent pas. Nous installons un présentoir au comptoir, distribuons des cartes et envoyons un SMS après chaque visite. C'est ainsi que vous passez à environ {{reviews_projected}} avis en 90 jours.
 
-Intéressé ? Tout est dans l'audit envoyé le {{email2_day}}.
+Tout est dans la page envoyée le {{email2_day}}.
 
 {{sender_first_name}}
 ```
@@ -90,9 +85,9 @@ Intéressé ? Tout est dans l'audit envoyé le {{email2_day}}.
 ```
 Bonjour {{first_name}},
 
-La fiche Google de {{business_name}} n'est pas encore revendiquée. N'importe qui peut donc suggérer des changements d'horaires, de téléphone ou d'adresse, et vous ne pouvez pas répondre aux avis.
+La fiche Google de {{business_name}} n'est pas encore revendiquée. N'importe qui peut modifier vos horaires, votre téléphone ou votre adresse, et vous ne pouvez pas répondre aux avis.
 
-La revendiquer est gratuit. Je peux vous guider en 10 minutes, même si vous ne devenez jamais client. Ça vous dit ?
+Nous la revendiquons avec vous en 10 minutes, puis nous en faisons une fiche qui attire des clients. Je vous appelle pour le faire ?
 
 {{sender_first_name}}
 ```
@@ -101,16 +96,14 @@ La revendiquer est gratuit. Je peux vous guider en 10 minutes, même si vous ne 
 
 ## Email 4 : J+14 (clôture)
 
-**Objet :** `je supprime votre audit ?`
+**Objet :** `je clôture votre dossier ?`
 
 ```
 Bonjour {{first_name}},
 
-Je comprends que ce n'est pas le moment. Votre page d'audit reste en ligne jusqu'au {{expiry_date}}, puis je la supprimerai.
+Je comprends que ce n'est pas le moment. Votre page reste en ligne jusqu'au {{expiry_date}}.
 
 Si le moment est mieux choisi plus tard, répondez « plus tard » et je reviendrai vers vous dans 3 mois. Belle continuation à {{business_name}}.
 
 {{sender_first_name}}
 ```
-
-**Note :** l'angle « Ask Maps » (variante C en anglais) n'est pas utilisé en France tant que le lancement de la fonctionnalité n'y est pas confirmé.

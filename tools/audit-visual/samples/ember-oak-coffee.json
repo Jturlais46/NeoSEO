@@ -1,0 +1,107 @@
+{
+  "_note": "Fictional business, reviewers and competitors for demo purposes. Photos: scikit-image sample data (CC0) and a rendered menu board.",
+  "locale": "en",
+  "audit_date": "Sep 20, 2026",
+  "projection_months": 3,
+  "prospect": {
+    "business_name": "Ember & Oak Coffee",
+    "vertical": "cafe",
+    "city": "Riverton",
+    "address": "214 Mill St, Riverton",
+    "phone_display": "(555) 014-2280",
+    "price_level": "$",
+    "primary_category": "Cafe",
+    "primary_category_specific": true,
+    "secondary_categories": [],
+    "rating": 4.2,
+    "review_count": 31,
+    "reviews_last_90d": 1,
+    "owner_reply_rate": 0,
+    "photo_count": 3,
+    "has_description": false,
+    "has_hours": false,
+    "has_website": false,
+    "has_services_or_menu": false,
+    "last_update_days_ago": null,
+    "is_claimed": true,
+    "email": "hello@example.com",
+    "phone": "+15555550142",
+    "photos": [{ "src": "photos/brick-dim.png" }],
+    "recent_reviews": [
+      {
+        "author": "Kevin R.",
+        "meta": "3 reviews",
+        "rating": 3,
+        "when": "5 months ago",
+        "text": "Good coffee but they were closed when Google said they'd be open. Hours need updating."
+      },
+      {
+        "author": "Priya S.",
+        "meta": "Local Guide · 112 reviews",
+        "rating": 4,
+        "when": "8 months ago",
+        "text": "Nice little place with a great latte. Not many seats though."
+      }
+    ]
+  },
+  "competitors": [
+    { "name": "Northside Roasters", "review_count": 264, "rating": 4.6 },
+    { "name": "The Daily Grind", "review_count": 187, "rating": 4.5 },
+    { "name": "Copper Kettle Cafe", "review_count": 142, "rating": 4.7 }
+  ],
+  "proposal": {
+    "primary_category": "Coffee shop",
+    "secondary_categories": ["Cafe", "Espresso bar", "Bakery"],
+    "hours_today": "Closes 6 PM",
+    "website_url": "emberandoak.coffee",
+    "description": "Neighborhood coffee shop on Mill Street since 2019. Single-origin espresso and pour-over roasted in small batches, fresh almond croissants every morning, and a quiet corner to work. Oat and almond milk at no extra cost.",
+    "services": ["Espresso and pour-over", "Fresh pastries daily", "Beans to take home", "Oat and almond milk", "Laptop-friendly seating"],
+    "photos": [
+      { "src": "photos/coffee.png" },
+      { "src": "photos/coffee-closeup.png", "label": "Latest" },
+      { "src": "photos/menu-board.png", "label": "Menu" },
+      { "src": "photos/brick-warm.png", "label": "Vibe" }
+    ],
+    "posts": [
+      { "text": "New autumn menu: maple oat latte and pumpkin loaf, all week long.", "when": "2 days ago", "photo": "photos/coffee-closeup.png" },
+      { "text": "Now open Sundays, 8 AM to 2 PM. See you this weekend!", "when": "1 week ago", "photo": "photos/menu-board.png" }
+    ],
+    "illustrative_reviews": [
+      {
+        "author": "Jessica M.",
+        "meta": "Local Guide · 31 reviews · 58 photos",
+        "rating": 5,
+        "when": "2 weeks ago",
+        "text": "Best flat white in Riverton, and the almond croissants are always fresh. They remembered my order on my second visit. Lovely spot to work for an hour.",
+        "owner_reply": "Thanks Jessica! Glad the croissants passed the test. See you for the next flat white. Dana, owner",
+        "owner_reply_when": "2 weeks ago"
+      },
+      {
+        "author": "Marcus T.",
+        "meta": "8 reviews",
+        "rating": 5,
+        "when": "1 month ago",
+        "text": "Friendly baristas and a great single-origin pour-over. Gets busy on Saturday mornings but worth the short wait.",
+        "owner_reply": "Thank you Marcus! Saturdays are our favorite kind of busy. Try the new Ethiopian pour-over next time. Dana",
+        "owner_reply_when": "1 month ago"
+      }
+    ],
+    "photo_shot_list": ["Storefront", "Counter and espresso machine", "Signature latte", "Pastry case", "The team", "Seating area"],
+    "update_ideas": [
+      "Week 1: Autumn menu launch with the maple oat latte",
+      "Week 2: Sunday opening hours announcement",
+      "Week 3: Meet the roaster, our beans this month",
+      "Week 4: Loyalty card: 10th coffee free"
+    ],
+    "sample_review_reply": {
+      "review_excerpt": "Good coffee but they were closed when Google said they'd be open. Hours need updating.",
+      "reply": "Thanks for the heads-up, and sorry about the wasted trip. Our hours are now correct on Google, including Sundays. Next coffee's on us if you mention this review. Dana, owner"
+    },
+    "setup_photo_count": 20
+  },
+  "links": {
+    "checkout": "https://example.com/checkout",
+    "booking": "https://example.com/book",
+    "optout": "https://example.com/stop"
+  }
+}

@@ -1,17 +1,20 @@
-# Cold sequence (US, English)
+# Email sequence (US, English)
 
-**Variables** come from the lead record and `audit.json`, produced by `tools/audit-visual`. The `outreach-email` skill fills them in and writes **one** tailored sentence per email (marked `{{tailored}}`). Everything else stays word-for-word, so quality holds at scale.
+The emails run alongside the Bland calls. For timing, see [docs/04-outbound-engine.md](../../docs/04-outbound-engine.md), section 6.
 
-**Rules:**
+**Where the content comes from:**
+- **Variables:** the lead record and `audit.json` from `tools/audit-visual`.
+- **Tailored sentence:** the `outreach-email` skill writes **one** sentence per email (`{{tailored}}`). Everything else stays word for word, so quality holds at scale.
+
+**Rules (deliverability):**
 - under 80 words;
 - plain text;
-- no images;
-- email 1 has no link;
+- email 1 has no link and no image;
 - no open tracking;
-- send from secondary domains;
+- secondary domains only;
 - sign with the founder's real name.
 
-**Footer** (every email):
+**Footer (every email):**
 ```
 {{sender_name}}, {{company}}
 {{postal_address}}
@@ -22,9 +25,9 @@ Not interested? Reply "stop" and I won't email again.
 
 ## Email 1: Day 0 (no link)
 
-**Subject options** (A/B test):
+**Subject options (A/B):**
 - `{{business_name}} on Google Maps`
-- `quick look at your Google profile`
+- `your Google profile in 90 days`
 - `{{competitor_1}} vs {{business_name}}`
 
 ```
@@ -38,37 +41,36 @@ I looked at {{business_name}} on Google Maps this week. Three things stood out:
 
 {{tailored}}
 
-I mocked up what your profile would look like fixed: categories, description, photo plan, even a reply to your latest review. Want me to send it over?
+I mocked up your profile as it would look after 90 days with us: around {{reviews_projected}} reviews, real photos, weekly posts. Want me to send it over?
 
 {{sender_first_name}}
 ```
 
 **Rules for `{{tailored}}`:**
-- one sentence, based on a competitor fact or something from the business's own website;
-- **no flattery**;
-- **nothing the data doesn't support**.
+- one sentence, about a competitor fact or something from the business's own website;
+- no flattery.
 
-Example: `Luca's and Via Roma, the two places Google shows next to you, both reply to almost every review.`
+Example: `Northside Roasters and The Daily Grind, the two places Google shows next to you, both reply to almost every review.`
 
-**Rules for findings:** plain words, drawn from `top_findings`, and rewritten for an owner. For example:
-- "0 replies to your 38 reviews"
-- "7 photos, none from this year"
-- "your category is just 'Restaurant', so you're not showing for 'Italian restaurant'"
+**Rules for findings:** plain words, taken from `top_findings`. Examples:
+- "no hours on Google, so you show as closed"
+- "0 replies to your 31 reviews"
+- "3 photos, none from this year"
 
 ---
 
-## Email 2: Day 3 (one link)
+## Email 2: Day 3 (card image + one link)
 
 **Subject:** same thread (`Re:`)
 
 ```
-Hi {{first_name}}, here it is anyway, no strings:
+Hi {{first_name}}, here it is: {{business_name}} today, and in 90 days.
 
-{{audit_url}}
+[card.png]
 
-It shows your profile today next to how it would look a week after we start, plus what we'd post in your first month.
+The full version, with your new description, categories and first month of posts: {{audit_url}}
 
-If you like it, there's a "yes" button on the page. {{price}}/month, no contract, and you always stay the owner.
+{{price}}/month, no contract, and you always stay the owner. There's a "yes" button on the page if you want us to start.
 
 {{sender_first_name}}
 ```
@@ -79,16 +81,16 @@ If you like it, there's a "yes" button on the page. {{price}}/month, no contract
 
 ### Variant A: Behind on reviews
 
-**Subject:** `{{review_count}} vs {{competitor_1_reviews}}`
+**Subject:** `{{reviews_today}} vs {{competitor_1_reviews}}`
 
 ```
 Hi {{first_name}},
 
-{{business_name}} has {{review_count}} Google reviews. {{competitor_1}} has {{competitor_1_reviews}}.
+{{business_name}} has {{reviews_today}} Google reviews. {{competitor_1}} has {{competitor_1_reviews}}.
 
-That gap is usually about asking, not quality: most happy customers never think to leave one. We send every customer the same short request after their visit and give you a counter card for the till. No rewards, no filtering, just asking.
+The gap is usually about asking, not quality. We put a review stand on your counter, hand out cards and text every customer after their visit. That's how we get you to around {{reviews_projected}} in 90 days.
 
-Worth a look? The audit I sent on {{email2_day}} has the details.
+Want to see the plan? It's in the page I sent on {{email2_day}}.
 
 {{sender_first_name}}
 ```
@@ -100,27 +102,25 @@ Worth a look? The audit I sent on {{email2_day}} has the details.
 ```
 Hi {{first_name}},
 
-Quick one: {{business_name}}'s Google listing isn't claimed yet. That means anyone can suggest changes to your hours, phone or address, and you can't reply to reviews.
+Quick one: {{business_name}}'s Google listing isn't claimed yet. Anyone can suggest changes to your hours, phone or address, and you can't reply to reviews.
 
-Claiming it is free. I'm happy to walk you through it in 10 minutes, even if you never become a client. Want me to?
+We'll claim it with you in 10 minutes and turn it into a profile that brings customers in. Want me to call you to do it?
 
 {{sender_first_name}}
 ```
 
-### Variant C: Neglected (Ask Maps angle, US only)
-
-Confirm Ask Maps is live for the prospect's area before enabling this variant. The launch date comes from news summaries (confidence [S] in docs/01-research.md).
+### Variant C: Neglected (Ask Maps angle, US)
 
 **Subject:** `Google's AI and {{business_name}}`
 
 ```
 Hi {{first_name}},
 
-Since March, Google Maps answers questions like "best {{service}} open now near me" with AI, built from what's on your profile, your reviews and your website.
+Google Maps now answers questions like "best {{service}} open now near me" with AI, built from your profile, your reviews and your website.
 
-Right now {{business_name}}'s profile is missing {{missing_1}} and {{missing_2}}, so there's less for it to say about you.
+Right now {{business_name}}'s profile is missing {{missing_1}} and {{missing_2}}, so there's little for it to say about you.
 
-The fix is in the audit I sent on {{email2_day}}. Want me to resend the link?
+The fix is in the page I sent on {{email2_day}}. Want me to resend it?
 
 {{sender_first_name}}
 ```
@@ -129,12 +129,12 @@ The fix is in the audit I sent on {{email2_day}}. Want me to resend the link?
 
 ## Email 4: Day 14 (close the loop)
 
-**Subject:** `should I delete your audit?`
+**Subject:** `should I close your file?`
 
 ```
 Hi {{first_name}},
 
-I'll take the silence as "not now". Your audit page stays up until {{expiry_date}}, then I'll delete it.
+I'll take the silence as "not now". Your 90-day profile page stays up until {{expiry_date}}.
 
 If the timing's better later, reply "later" and I'll check back in 3 months. Either way, good luck with {{business_name}}.
 
@@ -143,6 +143,6 @@ If the timing's better later, reply "later" and I'll check back in 3 months. Eit
 
 ---
 
-## Banned phrases (the Guard rejects any draft that contains them)
+## Words to avoid (spam filters)
 
-"guarantee", "#1", "rank first", "Google partner", "on behalf of Google", "your listing will be removed", "urgent", "final notice", "limited time", "act now", "verified by Google", "Google-certified". Also: any rating or review count we are not quoting from the data.
+"guarantee", "#1", "100% free", "act now", "limited time", "urgent", "final notice", "winner", "risk-free", "click here", and ALL-CAPS subject lines.

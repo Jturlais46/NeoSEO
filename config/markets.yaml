@@ -1,0 +1,38 @@
+# Per-market settings read by the outbound pipeline (n8n) and the Bland call module.
+# Prices marked "validate" are starting points to test in the pilot.
+
+version: 2
+
+defaults:
+  do_not_contact: global          # anyone who says stop is never contacted again, on any channel
+  max_call_attempts_per_lead: 3   # first call + 2 follow-ups, then email only
+  min_hours_between_calls: 48
+  email_links_first_touch: 0      # deliverability: no link in email 1
+  kill_switch:
+    email_bounce_rate_max: 0.03   # pause email above this (rolling 7 days)
+    email_complaint_rate_max: 0.002
+    call_answer_rate_min: 0.05    # below this, numbers are likely flagged as spam: rotate numbers
+  projection_months: 3
+
+markets:
+  US:
+    language: en
+    currency: USD
+    price: { keep: 99, grow: 179, setup: 149 }
+    calling_window_local: ["09:00", "18:00"]   # business hours: owners answer between rushes
+    call_days: [tue, wed, thu]                 # highest answer rates for small businesses (to validate)
+    ask_maps_live: true
+  FR:
+    language: fr
+    currency: EUR
+    price: { keep: 69, grow: 129, setup: 99 }   # HT
+    calling_window_local: [["10:00", "12:00"], ["14:30", "18:00"]]
+    call_days: [tue, wed, thu]
+    ask_maps_live: false
+  MY:
+    language: en            # English works for most business owners; add ms / zh voices after a pilot
+    currency: MYR
+    price: { keep: 199, grow: 349, setup: 0 }   # validate: local retainers are far below US prices
+    calling_window_local: [["10:00", "12:00"], ["14:30", "17:30"]]
+    call_days: [mon, tue, wed, thu]
+    ask_maps_live: false

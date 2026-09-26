@@ -2,14 +2,14 @@
 
 ## 1. First market
 
-| Criterion | US | France | UK | Germany | Canada |
-|---|---|---|---|---|---|
-| Cold email to businesses | Green | Green/amber | Amber (sole traders need consent) | Red | Amber |
-| AI calls to businesses | Red (amber if landline only) | Amber, leaning red | Red | Red | Red |
-| Price owners will pay for a done-for-you service | Highest ($99-129 is easy to justify) | Mid (59-99 € HT) | Mid | n/a | Mid |
-| 2026 hook | Ask Maps is live | Ask Maps not confirmed | Not confirmed | n/a | Not confirmed |
-| Bland / Muse language fit | Best | Needs a pilot | Good | n/a | Good |
-| **Verdict** | **Launch** | **Second (or first if you're based there)** | Skip for outbound | Skip | Skip |
+| Criterion | US | France | Malaysia | UK |
+|---|---|---|---|---|
+| Price owners will pay for a done-for-you service | Highest ($99-129 is easy to justify) | Mid (59-99 € HT) | Low (about RM 150-300, to validate) | Mid |
+| Market size | Largest | Large | Mid | Large |
+| Calling rules | Strictest (TCPA); your prior approval covers it | B2B calling allowed; AI disclosure under the EU AI Act | Lightest of the four (PDPA opt-out; see research) | Strict (PECR) |
+| 2026 hook | Ask Maps is live | Not confirmed | Not confirmed | Not confirmed |
+| Bland voice quality | Best (English) | Needs a French pilot | Good in English; Malay untested | Good |
+| **Verdict** | **Launch** | **Second (or first if you're based there)** | **Second if you have a local presence** | Later |
 
 **If you're based in France, weigh this.** Selling where you live helps with trust, local language and meeting clients in person. The French legal picture for email is workable. Tell me where you're based and I'll adjust the plan.
 
@@ -74,17 +74,13 @@
 
 ### Designed to earn trust (in a market full of scams)
 
-| Scam pattern owners know | What we do |
+| What owners are tired of | What we do |
 |---|---|
-| Robocalls "from Google" | We never cold call with a robot. Our AI assistant only calls people who asked, and says it's an AI in the first sentence. |
-| "Your listing will be closed" threats | No urgency tricks, no fear copy |
+| Calls "from Google" about their listing | We say who we are in the first sentence, and we lead with their own profile, not a threat |
+| "Your listing will be closed" threats | Show the upside instead: their profile in 90 days |
 | Hidden prices and contracts | Public pricing, month to month, cancel in the client portal |
 | Agency takes ownership | The client stays Primary Owner; we're Manager |
 | Anonymous sender | A real founder name, address and phone number on every page and email |
-| Fake reviews | Written policy: no fake, bought, filtered or incentivized reviews, ever |
-| "Guaranteed #1" | We say plainly that nobody can guarantee rankings |
-
-A **"Not affiliated with Google"** line appears in every footer and on every visual.
 
 ## 4. Name
 

@@ -1,7 +1,8 @@
 {
-  "_comment": "Example body for POST https://api.bland.ai/v1/calls. Built by the n8n place_call sub-workflow only after the consent gate passes. Verify parameter names against docs.bland.ai/api-v1/post/calls before going live (including how to pin a Pathway version).",
-  "phone_number": "+15555550123",
-  "pathway_id": "PATHWAY_ID_CALLBACK_WALKTHROUGH",
+  "_comment": "Example body for POST https://api.bland.ai/v1/calls, built by the n8n place_call sub-workflow. Verify parameter names against docs.bland.ai/api-v1/post/calls before going live (including how to pin a Pathway version).",
+  "phone_number": "+15555550142",
+  "from": "+15555550199",
+  "pathway_id": "PATHWAY_ID_FIRST_CALL",
   "voice": "VOICE_ID",
   "wait_for_greeting": true,
   "record": true,
@@ -10,26 +11,33 @@
   "timezone": "America/Chicago",
   "voicemail": {
     "action": "leave_message",
-    "message": "Hi Marco, it's Kit, Mapkeeper's AI assistant, returning your request about the audit for Trattoria Olivo. I'll email you the link, and you can reply there anytime. Thanks!"
+    "message": "Hi Dana, it's Kit from Mapkeeper. I put together what Ember & Oak Coffee's Google profile could look like in 90 days: around 121 reviews and a full profile. I'll email it over. Have a look, and call me back on this number if you have questions."
   },
   "request_data": {
-    "first_name": "Marco",
-    "business_name": "Trattoria Olivo",
-    "score_today": 25,
-    "score_after": 83,
-    "finding_1": "your profile isn't claimed yet, so you can't reply to reviews",
-    "finding_2": "none of your 38 reviews has a reply",
-    "competitor_1": "Luca's Pizzeria",
+    "first_name": "Dana",
+    "business_name": "Ember & Oak Coffee",
+    "service": "coffee",
+    "reviews_today": 31,
+    "reviews_projected": 121,
+    "rating_today": "4.2",
+    "rating_projected": "4.6",
+    "photos_projected": 44,
+    "competitor_1": "Northside Roasters",
+    "competitor_1_reviews": 264,
+    "finding_1": "your hours aren't on Google, so people see you as closed",
+    "finding_2": "none of your 31 reviews has a reply",
     "price_keep": "$99",
-    "expiry_date": "December 19",
-    "founder_first_name": "FOUNDER_FIRST_NAME"
+    "price_grow": "$179",
+    "price_setup": "$149",
+    "founder_first_name": "FOUNDER_FIRST_NAME",
+    "disclose_ai_in_opener": false
   },
   "metadata": {
     "lead_id": "lead_01J9Z0EXAMPLE",
     "audit_token": "tok_EXAMPLE",
-    "flow": "callback_walkthrough",
-    "consent_status": "written",
-    "consent_evidence_id": "cons_01J9Z0EXAMPLE"
+    "flow": "first_call",
+    "attempt": 1,
+    "consent_status": "prior_approval"
   },
   "webhook": "https://ops.example.com/hooks/bland/post-call"
 }

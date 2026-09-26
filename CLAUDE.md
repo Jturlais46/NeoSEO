@@ -2,23 +2,19 @@
 
 AI-run Google Business Profile management service (working brand: Mapkeeper). The plan lives in `docs/` (start at `docs/00-summary.md`). Agent playbooks live in `.claude/skills/`.
 
-## Non-negotiable rules
+## Working rules
 
-- **No AI cold calls.** Voice calls need `consent_status` in [written, inbound, client]. See `config/compliance.yaml`.
-- **Every outbound send passes the compliance gate:** suppression list, country and legal-form rules, calling windows.
-- **Never invent facts in audits, emails, calls or reports.** Use only numbers from the data. When unsure, mark `confidence: low`.
-- **The "after" side of any visual never changes the rating, review count or review recency.**
-- **No Google logos, no copies of Google's interface, no claims of Google affiliation, no ranking guarantees, no urgency or fear copy.**
-- **Reviews:**
-  - no gating, incentives or staff-name requests;
-  - never write reviews;
-  - the owner approves replies to negative reviews.
+- **Facts about a prospect's profile today come from the data.** Projections (review count, rating, photos in 90 days) come from `tools/audit-visual/src/projection.js`, so every channel quotes the same numbers.
+- **Outbound calls go through Bland** to leads marked `prior_approval`, `inbound` or `client` in `consent_status` (the founder confirms approval is in place). Calling hours and daily caps are set per market in `config/markets.yaml`.
+- **Anyone who says stop** (email, call or text) goes on the do-not-contact list and is never contacted again.
+- **We post replies to reviews, never reviews themselves.** The owner approves replies to negative reviews.
 - **Writing style:** never use em dashes. Use commas, colons, semicolons or separate sentences.
 
 ## Commands
 
 - Renderer: `cd tools/audit-visual && npm install && npm test && npm run sample`
 - Render one prospect: `node tools/audit-visual/src/render.js <prospect.json> --out out`
+- Capture a real "today" panel: `node tools/audit-visual/src/capture.js --place-id <ID> --out <file.png>`
 
 ## Conventions
 

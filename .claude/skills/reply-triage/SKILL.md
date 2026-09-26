@@ -1,41 +1,46 @@
 ---
 name: reply-triage
-description: Classify an inbound reply to cold outreach and draft the response from outreach/email/replies.md, applying suppression immediately for stop requests. Use on every reply webhook from the sending platform or inbox.
+description: Classify an inbound reply to outreach, draft the response from outreach/email/replies.md, and trigger the right Bland call or suppression. Use on every reply webhook from the sending platform or inbox.
 ---
 
 # Reply triage
 
 ## Input
-- The reply text and the thread history.
+
+- The reply text, plus the thread history.
 - The lead record.
 - `audit.json`.
-- Links: `audit_url`, `checkout_url`, `booking_url`, `callback_form_url`, `pricing_url`, `privacy_url`.
+- Links: `audit_url`, `checkout_url`, `booking_url`, `pricing_url`.
 
 ## Output
+
 ```json
 {
-  "category": "interested | question | price | call_me | not_now | has_provider | not_interested | unsubscribe | wrong_person | out_of_office | scam_or_google | data_request | complaint_or_legal | other",
+  "category": "interested | question | price | call_me | not_now | has_provider | not_interested | stop | wrong_person | out_of_office | is_this_google | data_request | complaint | other",
   "confidence": 0.0,
   "suppress": false,
   "reply_draft": "string or null",
-  "attach_card": false,
-  "next_action": "string",
+  "attach": "comparison.png | null",
+  "schedule_call": { "flow": "walkthrough_close", "at": "ISO time or next_slot" },
   "needs_founder": false
 }
 ```
 
 ## Rules
-1. **Suppress (`suppress: true`, no reply)** for `unsubscribe`, `not_interested`, or any hostile reply.
-   - Exception: EU/UK erasure requests (`data_request`) get the one-line confirmation.
-2. **Founder handles it (`needs_founder: true`)** when:
-   - the category is `complaint_or_legal`;
-   - the category is `other`;
-   - `confidence` is below 0.7;
-   - the prospect negotiates price or asks for anything not on the public pricing page.
-3. **`interested`:** use the "Interested" template and set `attach_card: true`.
-4. **`call_me`:**
-   - Always send the booking link and the consent-form link.
-   - Never schedule an AI call from a phone number found in the email text.
-5. **`out_of_office`:** reschedule the next step to the return date plus 2 days.
-6. **Keep drafts short.** Use the templates. Add at most one sentence answering the prospect's specific question, using facts from `audit.json` and the public pricing only.
-7. **Match the language** of the reply (English or French).
+
+1. **Stop.** If `stop` or `not_interested`, or the reply is hostile: set `suppress: true`, `reply_draft: null`, and no call.
+2. **Founder review.** Set `needs_founder: true` if any of these is true:
+   - `complaint`
+   - `other`
+   - `confidence` below 0.7
+   - the prospect is negotiating price
+3. **Interested, question or price:**
+   - Use the matching template.
+   - Attach `comparison.png` for `interested`.
+   - Schedule a `walkthrough_close` call for the next slot if we have their number.
+4. **Call me:** schedule `walkthrough_close` at the time they asked for, or the next slot in the market's calling window.
+5. **Out of office:** move the next step to their return date plus 2 days.
+6. **Keep drafts short.**
+   - Use the templates.
+   - Add at most one sentence that answers their specific question.
+   - Answer in the language of their reply.
