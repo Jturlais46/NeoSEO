@@ -49,9 +49,9 @@ flowchart TB
 
 | # | Function | Agent (skill) | Models / tools | Trigger | Start at | Graduate to | Promotion criteria |
 |---|---|---|---|---|---|---|---|
-| 1 | Prospecting | Prospector | n8n + Outscraper/DataForSEO + Haiku (website parsing) | Weekly per city and vertical | A1 (you approve cities, verticals and volume) | A2 | 4 clean weeks |
+| 1 | Prospecting | Prospector (`warm-pipeline`) | Claude Code on the subscription + Google Maps scan (`tools/pipeline`) | Weekly per city and vertical | A1 (you approve cities, verticals and volume) | A2 | 4 clean weeks |
 | 2 | Contact rules | Guard (code, not a model) | `config/markets.yaml` + do-not-contact list | Before every send or call | A3 | A3 | Code, with tests |
-| 3 | Audit + proposal | Auditor (`gbp-audit`) | Sonnet 5 (Batch) + renderer | New qualified lead | A1 (100% of the first 50) | A3 (10% random + low-confidence cases) | ≤2% material errors |
+| 3 | Audit + proposal | Auditor (`gbp-audit`, run inside `warm-pipeline`) | Claude Code on the subscription + renderer | New qualified lead | A1 (100% of the first 50) | A3 (10% random + low-confidence cases) | ≤2% material errors |
 | 4 | Email copy | Copywriter (`outreach-email`) | Sonnet 5 + Instantly API | Audit ready | A1 (templates) | A3 | Templates approved; spam and complaint rates within limits |
 | 5 | Inbox | Triage (`reply-triage`) | Haiku 4.5 classify + Sonnet 5 draft | Reply webhook | A1 for replies; A3 for unsubscribes | A3 | 50 drafts approved without edits |
 | 6 | Voice | Kit (Bland persona) | Bland pathways + tools | First call, follow-ups, walkthroughs, inbound, onboarding, check-ins | A2 (you review 10 transcripts a day) | A3 | 50 calls with no agent issues |

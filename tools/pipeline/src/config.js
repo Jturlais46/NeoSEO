@@ -1,13 +1,13 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import yaml from 'js-yaml';
+import { load as yamlLoad } from 'js-yaml';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
-export const DATA_DIR = process.env.PIPELINE_DATA_DIR || path.join(ROOT, 'data');
+export const dataDir = () => process.env.PIPELINE_DATA_DIR || path.join(ROOT, 'data');
 
 export async function loadYaml(rel) {
-  return yaml.load(await readFile(path.join(ROOT, rel), 'utf8'));
+  return yamlLoad(await readFile(path.join(ROOT, rel), 'utf8'));
 }
 
 // Merged view of config/markets.yaml and config/targets.yaml.

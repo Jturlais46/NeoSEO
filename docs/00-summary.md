@@ -1,24 +1,29 @@
 # Executive summary
 
-**Status:** plan v2, 2026-09-26. Built on the research in [01-research.md](01-research.md). Prices tagged *unverified* there need a check before you commit money.
+**Status:** plan v3, 2026-09-26: US and Malaysia, visuals 5 and 9, Claude Code as the bot. Built on the research in [01-research.md](01-research.md). Prices tagged *unverified* there need a check before you commit money.
 
 ## The business in one paragraph
 
 A productized, done-for-you Google Business Profile (GBP) service for independent local businesses.
 
-- **Price:** about **$99/month in the US**, or about 69 € HT in France. That sits between DIY software ($30-60) and human agencies ($125-700+).
+- **Markets:** the **US** and **Malaysia** (Klang Valley first).
+- **Price:** **$99/month in the US**, **RM199/month in Malaysia**. Both sit between DIY software (US $30-60, MY RM50) and human agencies (US $125-700+, MY RM800-3,500).
 - **How it sells:** we show each owner their profile today next to their profile in 90 days, with more reviews, a higher rating, real photos, fresh posts and a complete listing.
 - **How it's delivered:** the pitch goes out by email with the visual, and Bland AI calls prospects directly. AI agents do the prospecting, audits, calls, inbox, fulfillment and reporting. You approve and handle exceptions for about 5-15 hours a week.
 
-![Sample card](assets/sample-card-en.png)
+**The two visuals every prospect gets** (Visual 5, two phones; Visual 9, swipe card), built from their own listing:
 
-Full comparison: [assets/sample-comparison-en.png](assets/sample-comparison-en.png). Audit page: [assets/sample-audit-page.png](assets/sample-audit-page.png).
+| Visual 5 | Visual 9 |
+|---|---|
+| ![Visual 5](visual-options/kopitiam-seri-mawar/v-phones-portrait.png) | ![Visual 9](visual-options/kopitiam-seri-mawar/v-swipe.png) |
+
+All 11 options: [visual-options/contact-sheet.png](visual-options/contact-sheet.png). Malay and Chinese versions: [visual-options/](visual-options/).
 
 ## Strategic calls in this plan
 
 1. **Proof by visual, pushed by voice.**
    - Every prospect gets their own before/after: the real profile today, next to the 90-day version.
-   - Email delivers it. Bland calls to walk the owner through it and ask for the yes.
+   - Bland calls to walk the owner through it and ask for the yes; email (US) or WhatsApp (Malaysia) delivers it.
    - Calls go to leads marked `prior_approval`, with the approval obtained by you.
 2. **Make claimed-but-neglected profiles the primary segment. Unclaimed profiles are secondary.**
    - Established businesses with 15-150 reviews and a clear gap to the businesses shown next to them buy faster.
@@ -44,26 +49,14 @@ Full comparison: [assets/sample-comparison-en.png](assets/sample-comparison-en.p
 
 | Decision | Recommendation | Why |
 |---|---|---|
-| First market | **United States**, English | Highest prices, Ask Maps is live, Bland is strongest in English, and the market is the largest |
-| Second market | **France**, or **Malaysia** if you have a local presence there | See the market table in [02](02-positioning-and-brand.md). Malaysia has much lower prices and English-language calls work. |
-| Verticals to pilot | **Auto repair** + **salons/barbers** or **cafés and restaurants** | Walk-in customers (the kit works), trust-driven choices, "near me" searches |
-| Name | **Mapkeeper** (alternatives: Mapfront, Wellpinned) | Says what we do, frames the subscription, and is easy to say on a call. "SEO" is the word small-business owners associate with spam calls. |
-| Price | Keep $99/mo, Grow $179/mo, setup $149 (waived for the first 25 clients) | Above DIY software, below human agencies, month to month |
-| Sales channels | Email (visual + audit page) + Bland calls (first call, follow-ups, walkthrough and close) | The visual earns attention; the call converts it |
+| First market | **United States**, with Bland calls from day 1 | Bland works out of the box with US numbers; highest prices; Ask Maps is live |
+| Second market | **Malaysia**: warm pipeline now, Bland calls once a local carrier line is connected | Bland Enterprise can call from a genuine 03 number only through your own licensed Malaysian carrier over SIP. See [10-malaysia-launch.md](10-malaysia-launch.md), section 3 |
+| Verticals to pilot | US: **auto repair**, **salons/barbers**, **cafés**. Malaysia: **kopitiams and restaurants**, **workshops**, **salons** | Walk-in customers (the kit works), trust-driven choices, "near me" searches |
+| Name | **Mapkeeper** (alternatives: Mapfront, Wellpinned) | Says what we do, frames the subscription, and is easy to say on a call |
+| Price | US: Keep $99/mo, Grow $179/mo, setup $149. Malaysia: RM199 / RM399 / RM699, setup RM390 waived on 12 months | Above DIY software, below human agencies |
+| Sales process | Call first, then the visual by email or WhatsApp, a walkthrough call and a payment link | Full walkthrough with every scenario: [11-sales-playbook.md](11-sales-playbook.md) |
+| Warm pipeline | **Claude Code on your subscription** runs the bot ([tools/pipeline/](../tools/pipeline/)): Google Maps scan, qualification, a tailored proposal per lead, visuals 5 and 9, a ranked call sheet | No Anthropic API bill and no data vendor |
 | Fulfillment | Localo Pro or a similar white-label tool first, then our own GBP API integration once Google approves access | API approval reportedly needs a verified profile active for 60+ days, so apply now |
-| Orchestration | Self-hosted n8n + Claude API + the skills in this repo | Cheap, portable, compatible with Muse |
-
-## What you need to decide or do
-
-1. **Confirm the market and verticals.** Pricing, calling hours and language follow from this (`config/markets.yaml`).
-2. **Pick the name.** Run trademark searches and buy the domains. My search quota ran out before I could check trademarks.
-3. **Set up the business basics:** legal entity, Stripe account and business bank account.
-4. **Create and verify a GBP for the agency itself,** then apply for GBP API access.
-5. **Set up Bland.**
-   - Start plan to build the flows; Build plan ($299/mo) once you pass 100 calls a day.
-   - Buy local numbers in each market you call.
-   - Keep your call-approval records on file. Bland's terms tie outbound calling to consent, and your approvals are what cover it.
-6. **Approve the budget** in [08-roadmap-budget-kpis.md](08-roadmap-budget-kpis.md): about $3-5k over the first 3 months, most of the increase being Bland minutes.
 
 ## Map of this repo
 
@@ -77,8 +70,12 @@ Full comparison: [assets/sample-comparison-en.png](assets/sample-comparison-en.p
 | [docs/06-ai-operating-model.md](06-ai-operating-model.md) | Every function mapped to an agent and a human checkpoint; Muse compatibility |
 | [docs/07-website.md](07-website.md) | Sitemap, page copy, stack, audit page |
 | [docs/08-roadmap-budget-kpis.md](08-roadmap-budget-kpis.md) | Phases, budget, KPIs, kill criteria |
+| [docs/10-malaysia-launch.md](10-malaysia-launch.md) | Malaysia: pricing, languages, calling hours, Bland over a local carrier line, WhatsApp |
+| [docs/11-sales-playbook.md](11-sales-playbook.md) | The sales process end to end: materials, sequences, every scenario, closing, onboarding, operations |
+| [tools/pipeline/](../tools/pipeline/) | Warm pipeline bot, run by Claude Code |
 | [tools/audit-visual/](../tools/audit-visual/) | Google-style before/after panels, real-screenshot capture, comparison image, email card, audit page |
 | [outreach/email/](../outreach/email/) | Sequences (EN, FR) and reply playbook |
+| [outreach/messages/](../outreach/messages/) | Message templates M1-M11: WhatsApp for Malaysia (EN, BM, 中文), text and email for the US |
 | [outreach/voice/](../outreach/voice/) | Bland persona, call flows, API payload, post-call schema |
 | [.claude/skills/](../.claude/skills/) | Agent playbooks as `SKILL.md` |
 | [config/](../config/) | Market settings and the lead schema |

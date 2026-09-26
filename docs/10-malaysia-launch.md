@@ -41,7 +41,7 @@
 
 **Language**
 - Owners speak Malay, English, Chinese (Mandarin; Cantonese is common in Klang Valley commerce, Hokkien in Penang) or Tamil.
-- The visuals and proposals are built in English, Malay and Chinese (see [docs/visual-options/](visual-options/)).
+- The visuals and proposals are built in English, Malay and Chinese (see [docs/visual-options/](visual-options/)). Each target in `config/targets.yaml` sets the language; the pipeline writes the proposal, the visuals and the Bland voicemail in it.
 
 **When to call F&B owners** (inference, to confirm in the pilot)
 - Call between rushes: 10:00-11:30 and 15:00-17:30.
@@ -68,10 +68,78 @@
 
 **Caller ID risk:** Malaysia is blocking spoofed local numbers that arrive through international gateways [S] ([The Star, Jan 2026](https://www.thestar.com.my/news/nation/2026/01/25/scammers-using-caller-id-spoofing-to-impersonate-telcos-govt-agencies-says-bukit-aman)). A +60 caller ID on calls placed from abroad may be blocked or rewritten. A foreign caller ID gets fewer answers.
 
-**What to do**
-1. **Pilot caller ID.** Run 50-100 calls each through a Twilio +60 number (bring your own) and through Bland's default pool. Measure answer rates and how the number shows on Maxis, CelcomDigi and U Mobile.
-2. **Move to a local carrier if needed.** If answer rates are poor, ask Bland for SIP access and use a local licensed carrier's trunk.
-3. **Cantonese-speaking owners.** Use Retell (`yue-CN`) or Vapi (Azure/Speechmatics Cantonese) on the same numbers, or hand those calls to a human [R].
+### With a Bland Enterprise account: yes, through your own Malaysian carrier line
+
+**Verdict: a conditional yes.** Bland Enterprise can call Malaysian businesses from a genuine **03** number, but only by connecting a licensed Malaysian carrier to Bland over SIP (Bland's bring-your-own-carrier option). The carrier issues the numbers to your company and places the calls from inside Malaysia, so they pass the anti-spoofing filters.
+
+The other routes risk being blocked or having the number rewritten:
+- **Bland's own numbers:** US and Canada only.
+- **Bring-your-own Twilio +60 numbers:** they enter Malaysia through international gateways.
+- **A mobile 01x caller ID:** not realistic over a SIP line; plan on 03 numbers.
+
+**What Bland needs [R]** (from `enterprise-features/SIP-integration.mdx` and `api-v1/post/sip-attach.mdx`, docs dated 2026-09-23):
+
+| Item | Requirement |
+|---|---|
+| Endpoint | Asia-Pacific `asia2.sip.bland.ai:5061` (hosted in Sydney) |
+| Connection | TLS 1.2+ for the signaling, SRTP for the audio (AES_CM_128_HMAC_SHA1_80) |
+| Codecs | PCMU, PCMA, Opus, G.722 |
+| Authentication | Trusted IP addresses, or registration with a username and password |
+| Numbers | Attach each 03 number with `POST /v1/sip/attach`, then pass it as `from` on each call |
+| Callbacks | The attached numbers also receive calls, so owners who call back reach Kit's inbound flow |
+| Price | Plan rate per minute plus your carrier's charges; no discount for bringing your own line |
+
+**Docs conflict.** A changelog entry dated 2026-03-23 says the SIP feature was removed for all organizations. **Get SIP written into the Enterprise contract.**
+
+**Setup path**
+1. **Malaysian company.** A Sdn Bhd registered with SSM. Carriers typically ask for:
+   - the SSM certificate;
+   - the director's MyKad or passport;
+   - proof of a Malaysian office address;
+   - a letter describing how the numbers will be used (AI-assisted B2B calls, about 4,500 a month).
+2. **Carrier quotes.** 5-10 simultaneous call lines (channels) and 2-5 numbers from:
+   - **AlienVoIP:** internet-delivered, TLS/SRTP, numbers in 1-2 days. The best fit for a direct connection.
+   - **ITGTEL:** RM0.08-0.09/min.
+   - **Maxis Business SIP:** 4-7 sen/min, but runs over Maxis's own line.
+   - **TIME dotCom.**
+
+   Get written confirmation that AI-assisted outbound calls are allowed.
+3. **Connection.**
+   - **Direct:** if the carrier offers TLS/SRTP over the internet and accepts Bland's Sydney IP addresses.
+   - **Through a small relay server:** otherwise, host one in Malaysia (Asterisk, FreeSWITCH or Kamailio). It speaks Bland's secure format on one side and the carrier's on the other, and pins the caller ID to your own numbers. It costs about $30-100/month.
+4. **Bland configuration.**
+   - Create the trunk: `POST /v1/sip/trunks`.
+   - Attach the +603 numbers in both directions.
+   - Test with `/v1/sip/test-call`.
+5. **Pilot.** Place 50-100 calls to test phones on Maxis, CelcomDigi, U Mobile, Unifi Mobile and TM fixed lines. Check how the number displays, the answer rate and the delay.
+
+**Monthly cost at about 11,000 minutes**
+
+| Item | Monthly |
+|---|---|
+| Bland ($0.11-0.14/min, Enterprise is custom) | ~$1,210-1,540 |
+| Carrier minutes (RM0.07-0.09) | ~$180-240 |
+| Channels, numbers, relay server | ~$100-200 |
+| **Total** | **~$1,450-1,950**, plus any Bland international surcharge |
+
+**Ask Bland:**
+- Is SIP in the contract?
+- Can the line to the carrier use plain UDP or TCP?
+- In which headers and format does the caller ID go?
+- What is the rate for +60 calls that go out through our own line?
+- What are the limits on simultaneous calls and calls per second?
+- Where are recordings stored?
+
+**Ask the carrier:**
+- Do you accept foreign directors?
+- Can the line be delivered over the internet with TLS/SRTP?
+- Will our number display unchanged on every network?
+- Do your terms allow AI-assisted calls?
+- What are the rates, billing increment and minimum term?
+
+**If this can't be set up,** sell in the US with Bland first. Malaysia can start with the warm pipeline and visuals only: send the visual over WhatsApp after a human call, until the local line is live.
+
+**Cantonese-speaking owners:** use Retell (`yue-CN`) or Vapi on the same carrier line, or a human caller [R].
 
 ## 4. Sending the visual on WhatsApp
 
@@ -95,13 +163,11 @@
 
 | Item | Monthly |
 |---|---|
-| Bland Build ($299 + ~10,800 min × $0.12) | ~$1,600 |
-| Local carrier or Twilio minutes | ~$275 |
-| Bland international surcharge | unknown |
+| Bland Enterprise over your carrier line (section 3) | ~$1,450-1,950 |
 | WhatsApp marketing templates (~1,300 × RM0.35) | ~$110 |
-| Outscraper (listings, reviews, photos) | ~$30-60 |
-| Claude (proposals, ~4,000 per month) | ~$150-400 [U] |
-| **Total** | **~$2,200-2,500**, plus any international surcharge |
+| Listings, reviews, photos | $0: Google Maps scan by the pipeline bot |
+| Proposals (~4,000 per month) | $0 extra: Claude Code on your subscription. At this volume, plan on a Max plan and several runs a day [U] |
+| **Total** | **~$1,560-2,060**, plus the Bland Enterprise minimum and any international surcharge |
 
 **Pilot volume:** at 250 leads a week, expect roughly a quarter of these costs.
 

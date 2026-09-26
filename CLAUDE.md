@@ -1,6 +1,6 @@
 # Project context for agents
 
-AI-run Google Business Profile management service (working brand: Mapkeeper). The plan lives in `docs/` (start at `docs/00-summary.md`). Agent playbooks live in `.claude/skills/`.
+AI-run Google Business Profile management service (working brand: Mapkeeper). Markets: US and Malaysia. Default visuals: 5 (`phones-portrait`) and 9 (`swipe`). The plan lives in `docs/` (start at `docs/00-summary.md`). Agent playbooks live in `.claude/skills/`.
 
 ## Working rules
 
@@ -14,6 +14,7 @@ AI-run Google Business Profile management service (working brand: Mapkeeper). Th
 
 - Renderer: `cd tools/audit-visual && npm install && npm test && npm run sample`
 - Render one prospect: `node tools/audit-visual/src/render.js <prospect.json> --out out`
+- Pipeline: `cd tools/pipeline && npm install && npm test && npm run demo`; real runs follow `.claude/skills/warm-pipeline/SKILL.md`
 - Capture a real "today" panel: `node tools/audit-visual/src/capture.js --place-id <ID> --out <file.png>`
 
 ## Conventions

@@ -7,7 +7,7 @@ description: Turn raw Google Business Profile listing data for one local busines
 
 ## Input
 
-- **Listing record** from Outscraper or DataForSEO: `place_id`, name, address, phone, categories, rating, review count, star distribution, recent reviews (with dates and owner answers), photos and photo count, hours, website, description, posts, claimed flag.
+- **Listing record** from the pipeline's Google Maps scan (`tools/pipeline`, see `data/leads/<id>.json`): `place_id`, name, address, phone, categories, rating, review count, star distribution, recent reviews (with dates and owner answers), photos and photo count, hours, website, description, posts, claimed flag.
 - **Up to 3 competitor records:** the businesses shown above this one for its main query in the same area.
 - **Optional:** website text (About, Services, Menu) and website or Instagram photo URLs.
 

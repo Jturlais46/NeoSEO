@@ -34,9 +34,10 @@ export function callBlocker(lead, market, { now = new Date() } = {}) {
   if (lead.suppressed) return 'do_not_contact';
   if (!ALLOWED.has(lead.consent_status)) return 'no_call_approval';
   if (!lead.prospect?.phone) return 'no_phone';
+  if (market.call_line_types && !market.call_line_types.includes(lead.line_type || 'unknown')) return `line_type_${lead.line_type || 'unknown'}`;
   if ((lead.call_attempts || 0) >= (market.max_call_attempts_per_lead ?? 3)) return 'max_attempts';
   if (lead.last_call_at && now - new Date(lead.last_call_at) < (market.min_hours_between_calls ?? 48) * HOURS) return 'too_soon';
-  if (!withinCallingWindow(market, { date: now, state: lead.state })) return 'outside_calling_hours';
+  if (!withinCallingWindow({ ...market, timezone: lead.prospect.time_zone || market.timezone }, { date: now, state: lead.state })) return 'outside_calling_hours';
   return null;
 }
 
@@ -51,8 +52,8 @@ export function callPayload(lead, audit, market, flow = 'first_call') {
     wait_for_greeting: true,
     record: true,
     max_duration: 12,
-    language: market.bland_language || lead.locale || 'en',
-    timezone: market.timezone,
+    language: ({ en: 'en', ms: 'ms', zh: 'zh', fr: 'fr' })[lead.locale] || market.bland_language || 'en',
+    timezone: lead.prospect.time_zone || market.timezone,
     voicemail: { action: 'leave_message', message: voicemail(lead, audit) },
     request_data: requestData(lead, audit, market),
     metadata: { lead_id: lead.lead_id, flow, attempt: (lead.call_attempts || 0) + 1, consent_status: lead.consent_status },
@@ -60,8 +61,13 @@ export function callPayload(lead, audit, market, flow = 'first_call') {
   };
 }
 
+const VOICEMAIL = {
+  en: (n, r) => `Hi, it's Kit from Mapkeeper. I put together what ${n}'s Google profile could look like in 90 days: around ${r} reviews and a full profile. I'll send it over. Call me back on this number anytime.`,
+  ms: (n, r) => `Hai, ini Kit dari Mapkeeper. Saya dah sediakan rupa profil Google ${n} dalam 90 hari: kira-kira ${r} ulasan dan profil yang lengkap. Saya akan hantar kepada anda. Telefon semula nombor ini bila-bila masa.`,
+  zh: (n, r) => `您好，我是 Mapkeeper 的 Kit。我为${n}准备了 90 天后的 Google 商家资料：大约 ${r} 条评价和完整的资料。我会发给您，欢迎随时回电这个号码。`,
+};
 function voicemail(lead, audit) {
-  return `Hi, it's Kit from Mapkeeper. I put together what ${lead.business_name}'s Google profile could look like in 90 days: around ${audit.reviews_projected} reviews and a full profile. I'll send it over. Call me back on this number anytime.`;
+  return (VOICEMAIL[lead.locale] || VOICEMAIL.en)(lead.business_name, audit.reviews_projected);
 }
 
 export async function placeCall(payload, { apiKey = process.env.BLAND_API_KEY } = {}) {

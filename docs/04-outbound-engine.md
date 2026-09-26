@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart LR
-  A[Source listings<br/>Outscraper / DataForSEO] --> B[Enrich contacts<br/>site crawl + Prospeo/Findymail]
+  A[Google Maps scan<br/>tools/pipeline] --> B[Enrich contacts<br/>site crawl + Prospeo/Findymail]
   B --> C[Verify + dedupe<br/>MillionVerifier, do-not-contact list]
   C --> D[Score + segment<br/>score.js]
   D --> E[Audit + proposal<br/>gbp-audit skill]
@@ -23,19 +23,18 @@ flowchart LR
 ## 1. Lead sourcing
 
 - **Batches:** one vertical × one metro area per batch. Start with cities of 100k-1M people, where profiles are neglected and competition is moderate.
-- **Primary source: Outscraper Google Maps.**
-  - Fields: `place_id`, `verified`, `rating`, `reviews`, `photos_count`, categories, website, hours, posts, photos.
-  - Recent reviews come through the reviews endpoint.
-  - Cost: about $3 per 1,000 listings, plus about $3 per 1,000 for emails and contacts.
-- **Alternative: DataForSEO Business Data.**
-  - Fields: `is_claimed`, `total_photos`, reviews with `owner_answer`, posts.
-  - Use it for deeper audits of shortlisted leads.
+- **Primary source: the pipeline bot's Google Maps scan** ([tools/pipeline/](../tools/pipeline/), run by Claude Code on the subscription).
+  - Reads each listing in a browser: name, category, rating, review count, photo count, address, phone, website, hours, the "Own this business?" link (unclaimed), the 10 newest reviews with owner replies, up to 6 photos and a screenshot.
+  - Cost: $0. Limits: it must run from a normal home or office connection, and Google may show a block page after heavy use. Selectors need a fix when Google changes the page.
+- **Paid fallbacks if the scan gets blocked too often:**
+  - Outscraper or DataForSEO: about $3 per 1,000 listings, with a claimed flag and reviews.
+  - Google Places API (New): official, but no claimed flag or photo count, and its terms forbid storing names and reviews or using them with text-to-speech.
 - **Competitors:** the 3 businesses ranking above the lead for its main query in the same area. They're the benchmark for the review gap and set the default review pace in the projection.
 
 ## 2. Contact enrichment (waterfall)
 
 1. **Crawl the business website with the LLM.** Look at the About and Contact pages and the footer for the owner's name, email and phone.
-2. **Outscraper Emails & Contacts.**
+2. **The business's Facebook or Instagram page** (Claude reads the contact details).
 3. **Prospeo or Findymail** for gaps. Both charge only for verified results. Findymail and Prospeo also return mobile numbers, which reach the owner better than the shop landline.
 4. **MillionVerifier.** Send only to addresses marked "ok".
 5. **Twilio Lookup** (about $0.008 per number) to know whether a number is a mobile or a landline. A landline call reaches staff, so the Bland opener asks for the owner. A mobile call usually reaches the owner directly.

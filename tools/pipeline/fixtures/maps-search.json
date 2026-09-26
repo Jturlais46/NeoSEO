@@ -1,0 +1,636 @@
+{
+ "now": "2026-09-29T07:30:00+00:00",
+ "searches": [
+  {
+   "id": "demo-my-kopitiam",
+   "market": "MY",
+   "locale": "en",
+   "vertical": "cafe",
+   "query": "kopitiam in SS2 Petaling Jaya",
+   "places": [
+    {
+     "place_id": "my1",
+     "name": "Restoran Wah Seng",
+     "category": "Chinese restaurant",
+     "subtypes": "Chinese restaurant, Coffee shop",
+     "rating": 4.3,
+     "reviews": 634,
+     "reviews_per_score": null,
+     "photos_count": 212,
+     "photo": "tools/audit-visual/samples/photos/coffee.png",
+     "verified": true,
+     "working_hours": {
+      "Monday": "7 AM–3 PM",
+      "Tuesday": "7 AM–3 PM",
+      "Wednesday": "7 AM–3 PM",
+      "Thursday": "7 AM–3 PM",
+      "Friday": "7 AM–3 PM",
+      "Saturday": "7 AM–3 PM",
+      "Sunday": "7 AM–1 PM"
+     },
+     "site": "https://example.com/wahseng",
+     "description": "Kopitiam classics since 1985.",
+     "city": "Petaling Jaya",
+     "state": "Selangor",
+     "time_zone": "Asia/Kuala_Lumpur",
+     "phone": "+60 3-7800 1001",
+     "full_address": "1, Jalan SS 2/61, SS 2, 47300 Petaling Jaya, Selangor, Malaysia",
+     "range": "RM 1–20",
+     "business_status": "OPERATIONAL",
+     "reviews_data": [
+      {
+       "author_title": "Alan Wong",
+       "author_reviews_count": 40,
+       "review_rating": 5,
+       "review_timestamp": 1790235000,
+       "review_text": "Great kaya toast.",
+       "owner_answer": "Thank you!"
+      },
+      {
+       "author_title": "Siti N",
+       "author_reviews_count": 3,
+       "review_rating": 4,
+       "review_timestamp": 1788939000,
+       "review_text": "Busy but fast.",
+       "owner_answer": "Terima kasih!"
+      }
+     ],
+     "photos_data": [
+      {
+       "photo_url_big": "tools/audit-visual/samples/photos/coffee.png"
+      }
+     ]
+    },
+    {
+     "place_id": "my2",
+     "name": "Kopi Kaki SS2",
+     "category": "Coffee shop",
+     "subtypes": "Coffee shop, Breakfast restaurant",
+     "rating": 4.5,
+     "reviews": 418,
+     "reviews_per_score": null,
+     "photos_count": 160,
+     "photo": "tools/audit-visual/samples/photos/coffee-closeup.png",
+     "verified": true,
+     "working_hours": {
+      "Monday": "7 AM–3 PM",
+      "Tuesday": "7 AM–3 PM",
+      "Wednesday": "7 AM–3 PM",
+      "Thursday": "7 AM–3 PM",
+      "Friday": "7 AM–3 PM",
+      "Saturday": "7 AM–3 PM",
+      "Sunday": "7 AM–1 PM"
+     },
+     "site": "https://example.com/kopikaki",
+     "description": "Specialty kopi in SS2.",
+     "city": "Petaling Jaya",
+     "state": "Selangor",
+     "time_zone": "Asia/Kuala_Lumpur",
+     "phone": "+60 3-7800 1002",
+     "full_address": "3, Jalan SS 2/24, SS 2, 47300 Petaling Jaya, Selangor, Malaysia",
+     "range": "RM 1–20",
+     "business_status": "OPERATIONAL",
+     "reviews_data": [
+      {
+       "author_title": "Mei Tan",
+       "author_reviews_count": 22,
+       "review_rating": 5,
+       "review_timestamp": 1790407800,
+       "review_text": "Best kopi O.",
+       "owner_answer": "Thanks Mei!"
+      }
+     ],
+     "photos_data": [
+      {
+       "photo_url_big": "tools/audit-visual/samples/photos/coffee-closeup.png"
+      }
+     ]
+    },
+    {
+     "place_id": "my3",
+     "name": "Nasi Lemak Kak Yah",
+     "category": "Malaysian restaurant",
+     "subtypes": "Malaysian restaurant",
+     "rating": 4.4,
+     "reviews": 289,
+     "reviews_per_score": null,
+     "photos_count": 95,
+     "photo": null,
+     "verified": true,
+     "working_hours": {
+      "Monday": "7 AM–3 PM",
+      "Tuesday": "7 AM–3 PM",
+      "Wednesday": "7 AM–3 PM",
+      "Thursday": "7 AM–3 PM",
+      "Friday": "7 AM–3 PM",
+      "Saturday": "7 AM–3 PM",
+      "Sunday": "7 AM–1 PM"
+     },
+     "site": null,
+     "description": null,
+     "city": "Petaling Jaya",
+     "state": "Selangor",
+     "time_zone": "Asia/Kuala_Lumpur",
+     "phone": "+60 12-800 1003",
+     "full_address": "5, Jalan SS 2/10, SS 2, 47300 Petaling Jaya, Selangor, Malaysia",
+     "range": "RM 1–20",
+     "business_status": "OPERATIONAL",
+     "reviews_data": [
+      {
+       "author_title": "Hafiz Z",
+       "author_reviews_count": 8,
+       "review_rating": 4,
+       "review_timestamp": 1789803000,
+       "review_text": "Sambal padu.",
+       "owner_answer": null
+      }
+     ],
+     "photos_data": []
+    },
+    {
+     "place_id": "my4",
+     "name": "Kedai Kopi Lai Heng",
+     "category": "Coffee shop",
+     "subtypes": "Coffee shop",
+     "rating": 4.2,
+     "reviews": 156,
+     "reviews_per_score": null,
+     "photos_count": 14,
+     "photo": "tools/audit-visual/samples/photos/brick-warm.png",
+     "verified": true,
+     "working_hours": {
+      "Monday": "7 AM–3 PM",
+      "Tuesday": "7 AM–3 PM",
+      "Wednesday": "7 AM–3 PM",
+      "Thursday": "7 AM–3 PM",
+      "Friday": "7 AM–3 PM",
+      "Saturday": "7 AM–3 PM",
+      "Sunday": "7 AM–1 PM"
+     },
+     "site": null,
+     "description": null,
+     "city": "Petaling Jaya",
+     "state": "Selangor",
+     "time_zone": "Asia/Kuala_Lumpur",
+     "phone": "+60 3-7800 1004",
+     "full_address": "7, Jalan SS 2/55, SS 2, 47300 Petaling Jaya, Selangor, Malaysia",
+     "range": null,
+     "business_status": "OPERATIONAL",
+     "reviews_data": [
+      {
+       "author_title": "Jason Lim",
+       "author_reviews_count": 12,
+       "review_rating": 4,
+       "review_timestamp": 1789371000,
+       "review_text": "Old-school vibe, good half-boiled eggs.",
+       "owner_answer": null
+      },
+      {
+       "author_title": "Nurul A",
+       "author_reviews_count": 5,
+       "review_rating": 3,
+       "review_timestamp": 1787211000,
+       "review_text": "Slow service at lunch.",
+       "owner_answer": null
+      },
+      {
+       "author_title": "K Raj",
+       "author_reviews_count": 30,
+       "review_rating": 5,
+       "review_timestamp": 1784619000,
+       "review_text": "Love the roti bakar.",
+       "owner_answer": null
+      }
+     ],
+     "photos_data": [
+      {
+       "photo_url_big": "tools/audit-visual/samples/photos/brick-warm.png"
+      }
+     ]
+    },
+    {
+     "place_id": "my5",
+     "name": "Restoran Pak Man",
+     "category": "Restaurant",
+     "subtypes": "Restaurant",
+     "rating": 4.0,
+     "reviews": 88,
+     "reviews_per_score": null,
+     "photos_count": 6,
+     "photo": "tools/audit-visual/samples/photos/brick-dim.png",
+     "verified": true,
+     "working_hours": null,
+     "site": null,
+     "description": null,
+     "city": "Petaling Jaya",
+     "state": "Selangor",
+     "time_zone": "Asia/Kuala_Lumpur",
+     "phone": "+60 12-800 1005",
+     "full_address": "9, Jalan SS 2/72, SS 2, 47300 Petaling Jaya, Selangor, Malaysia",
+     "range": null,
+     "business_status": "OPERATIONAL",
+     "reviews_data": [
+      {
+       "author_title": "Farid M",
+       "author_reviews_count": 4,
+       "review_rating": 3,
+       "review_timestamp": 1777707000,
+       "review_text": "Food ok but Google said open, reached 4pm already closed.",
+       "owner_answer": null
+      },
+      {
+       "author_title": "Aida S",
+       "author_reviews_count": 2,
+       "review_rating": 5,
+       "review_timestamp": 1773387000,
+       "review_text": "Sedap!",
+       "owner_answer": null
+      }
+     ],
+     "photos_data": [
+      {
+       "photo_url_big": "tools/audit-visual/samples/photos/brick-dim.png"
+      }
+     ]
+    },
+    {
+     "place_id": "my6",
+     "name": "Kafe Bunga Raya",
+     "category": "Cafe",
+     "subtypes": "Cafe",
+     "rating": 4.6,
+     "reviews": 45,
+     "reviews_per_score": null,
+     "photos_count": 9,
+     "photo": "tools/audit-visual/samples/photos/coffee.png",
+     "verified": false,
+     "working_hours": {
+      "Monday": "7 AM–3 PM",
+      "Tuesday": "7 AM–3 PM",
+      "Wednesday": "7 AM–3 PM",
+      "Thursday": "7 AM–3 PM",
+      "Friday": "7 AM–3 PM",
+      "Saturday": "7 AM–3 PM",
+      "Sunday": "7 AM–1 PM"
+     },
+     "site": null,
+     "description": null,
+     "city": "Petaling Jaya",
+     "state": "Selangor",
+     "time_zone": "Asia/Kuala_Lumpur",
+     "phone": "+60 16-800 1006",
+     "full_address": "11, Jalan SS 2/3, SS 2, 47300 Petaling Jaya, Selangor, Malaysia",
+     "range": null,
+     "business_status": "OPERATIONAL",
+     "reviews_data": [
+      {
+       "author_title": "Priya S",
+       "author_reviews_count": 60,
+       "review_rating": 5,
+       "review_timestamp": 1788075000,
+       "review_text": "Cosy cafe, great cakes.",
+       "owner_answer": null
+      }
+     ],
+     "photos_data": [
+      {
+       "photo_url_big": "tools/audit-visual/samples/photos/coffee.png"
+      }
+     ]
+    },
+    {
+     "place_id": "my7",
+     "name": "Kopitiam Seri Mawar",
+     "category": "Restaurant",
+     "subtypes": "Restaurant",
+     "rating": 3.9,
+     "reviews": 27,
+     "reviews_per_score": null,
+     "photos_count": 2,
+     "photo": "tools/audit-visual/samples/photos/brick-dim.png",
+     "verified": true,
+     "working_hours": null,
+     "site": null,
+     "description": null,
+     "city": "Petaling Jaya",
+     "state": "Selangor",
+     "time_zone": "Asia/Kuala_Lumpur",
+     "phone": "+60 3-7800 0012",
+     "full_address": "88, Jalan SS 2/61, SS 2, 47300 Petaling Jaya, Selangor, Malaysia",
+     "range": "RM 1–20",
+     "business_status": "OPERATIONAL",
+     "reviews_data": [
+      {
+       "author_title": "Farid Mohd",
+       "author_reviews_count": 4,
+       "review_rating": 3,
+       "review_timestamp": 1777707000,
+       "review_text": "Food ok but Google said open, reached at 4pm already closed. Please update your hours.",
+       "owner_answer": null
+      },
+      {
+       "author_title": "Mei Ling Chan",
+       "author_reviews_count": 88,
+       "review_rating": 4,
+       "review_timestamp": 1772523000,
+       "review_text": "Old-school kopitiam vibe. The kaya toast is good.",
+       "owner_answer": null
+      }
+     ],
+     "photos_data": [
+      {
+       "photo_url_big": "tools/audit-visual/samples/photos/brick-dim.png"
+      }
+     ]
+    },
+    {
+     "place_id": "my8",
+     "name": "Uncle Tan Kopi",
+     "category": "Coffee shop",
+     "subtypes": "Coffee shop",
+     "rating": 5.0,
+     "reviews": 2,
+     "reviews_per_score": null,
+     "photos_count": 1,
+     "photo": null,
+     "verified": true,
+     "working_hours": {
+      "Monday": "7 AM–3 PM",
+      "Tuesday": "7 AM–3 PM",
+      "Wednesday": "7 AM–3 PM",
+      "Thursday": "7 AM–3 PM",
+      "Friday": "7 AM–3 PM",
+      "Saturday": "7 AM–3 PM",
+      "Sunday": "7 AM–1 PM"
+     },
+     "site": null,
+     "description": null,
+     "city": "Petaling Jaya",
+     "state": "Selangor",
+     "time_zone": "Asia/Kuala_Lumpur",
+     "phone": "+60 12-800 1008",
+     "full_address": "13, Jalan SS 2/8, SS 2, 47300 Petaling Jaya, Selangor, Malaysia",
+     "range": null,
+     "business_status": "OPERATIONAL",
+     "reviews_data": [
+      {
+       "author_title": "Ben",
+       "author_reviews_count": 1,
+       "review_rating": 5,
+       "review_timestamp": 1790235000,
+       "review_text": "Nice",
+       "owner_answer": null
+      }
+     ],
+     "photos_data": []
+    },
+    {
+     "place_id": "my9",
+     "name": "Old SS2 Canteen",
+     "category": "Restaurant",
+     "subtypes": "Restaurant",
+     "rating": 3.8,
+     "reviews": 40,
+     "reviews_per_score": null,
+     "photos_count": 3,
+     "photo": null,
+     "verified": true,
+     "working_hours": null,
+     "site": null,
+     "description": null,
+     "city": "Petaling Jaya",
+     "state": "Selangor",
+     "time_zone": "Asia/Kuala_Lumpur",
+     "phone": "+60 3-7800 1009",
+     "full_address": "15, Jalan SS 2/9, SS 2, 47300 Petaling Jaya, Selangor, Malaysia",
+     "range": null,
+     "business_status": "CLOSED_PERMANENTLY",
+     "reviews_data": [],
+     "photos_data": []
+    }
+   ]
+  },
+  {
+   "id": "demo-us-auto",
+   "market": "US",
+   "locale": "en",
+   "vertical": "auto_repair",
+   "query": "auto repair shop in Austin, TX",
+   "places": [
+    {
+     "place_id": "us1",
+     "name": "Lone Star Auto Care",
+     "category": "Auto repair shop",
+     "subtypes": "Auto repair shop, Oil change service",
+     "rating": 4.8,
+     "reviews": 512,
+     "reviews_per_score": null,
+     "photos_count": 140,
+     "photo": "tools/audit-visual/samples/photos/brick-warm.png",
+     "verified": true,
+     "working_hours": {
+      "Monday": "8 AM–6 PM",
+      "Tuesday": "8 AM–6 PM",
+      "Wednesday": "8 AM–6 PM",
+      "Thursday": "8 AM–6 PM",
+      "Friday": "8 AM–6 PM",
+      "Saturday": "Closed",
+      "Sunday": "Closed"
+     },
+     "site": "https://example.com/lonestar",
+     "description": "Family-owned since 1994.",
+     "city": "Austin",
+     "state": "Texas",
+     "time_zone": "America/Chicago",
+     "phone": "+1 512-555-0101",
+     "full_address": "100 Burnet Rd, Austin, TX 78756, USA",
+     "range": null,
+     "business_status": "OPERATIONAL",
+     "reviews_data": [
+      {
+       "author_title": "Mike R",
+       "author_reviews_count": 12,
+       "review_rating": 5,
+       "review_timestamp": 1790321400,
+       "review_text": "Honest and fast.",
+       "owner_answer": "Thanks Mike!"
+      }
+     ],
+     "photos_data": [
+      {
+       "photo_url_big": "tools/audit-visual/samples/photos/brick-warm.png"
+      }
+     ]
+    },
+    {
+     "place_id": "us2",
+     "name": "Eastside Garage",
+     "category": "Auto repair shop",
+     "subtypes": "Auto repair shop, Brake shop",
+     "rating": 4.6,
+     "reviews": 301,
+     "reviews_per_score": null,
+     "photos_count": 88,
+     "photo": null,
+     "verified": true,
+     "working_hours": {
+      "Monday": "8 AM–6 PM",
+      "Tuesday": "8 AM–6 PM",
+      "Wednesday": "8 AM–6 PM",
+      "Thursday": "8 AM–6 PM",
+      "Friday": "8 AM–6 PM",
+      "Saturday": "Closed",
+      "Sunday": "Closed"
+     },
+     "site": "https://example.com/eastside",
+     "description": null,
+     "city": "Austin",
+     "state": "Texas",
+     "time_zone": "America/Chicago",
+     "phone": "+1 512-555-0102",
+     "full_address": "200 E 7th St, Austin, TX 78702, USA",
+     "range": null,
+     "business_status": "OPERATIONAL",
+     "reviews_data": [
+      {
+       "author_title": "Dana K",
+       "author_reviews_count": 4,
+       "review_rating": 5,
+       "review_timestamp": 1789889400,
+       "review_text": "Fixed my brakes same day.",
+       "owner_answer": "Thank you Dana!"
+      }
+     ],
+     "photos_data": []
+    },
+    {
+     "place_id": "us3",
+     "name": "Precision Auto Austin",
+     "category": "Auto repair shop",
+     "subtypes": "Auto repair shop",
+     "rating": 4.5,
+     "reviews": 188,
+     "reviews_per_score": null,
+     "photos_count": 40,
+     "photo": null,
+     "verified": true,
+     "working_hours": {
+      "Monday": "8 AM–6 PM",
+      "Tuesday": "8 AM–6 PM",
+      "Wednesday": "8 AM–6 PM",
+      "Thursday": "8 AM–6 PM",
+      "Friday": "8 AM–6 PM",
+      "Saturday": "Closed",
+      "Sunday": "Closed"
+     },
+     "site": "https://example.com/precision",
+     "description": null,
+     "city": "Austin",
+     "state": "Texas",
+     "time_zone": "America/Chicago",
+     "phone": "+1 512-555-0103",
+     "full_address": "300 S Lamar Blvd, Austin, TX 78704, USA",
+     "range": null,
+     "business_status": "OPERATIONAL",
+     "reviews_data": [
+      {
+       "author_title": "Luis G",
+       "author_reviews_count": 20,
+       "review_rating": 4,
+       "review_timestamp": 1788507000,
+       "review_text": "Fair prices.",
+       "owner_answer": null
+      }
+     ],
+     "photos_data": []
+    },
+    {
+     "place_id": "us4",
+     "name": "Rick's Transmission & Repair",
+     "category": "Mechanic",
+     "subtypes": "Mechanic",
+     "rating": 4.1,
+     "reviews": 64,
+     "reviews_per_score": null,
+     "photos_count": 5,
+     "photo": "tools/audit-visual/samples/photos/brick-dim.png",
+     "verified": true,
+     "working_hours": null,
+     "site": null,
+     "description": null,
+     "city": "Austin",
+     "state": "Texas",
+     "time_zone": "America/Chicago",
+     "phone": "+1 512-555-0104",
+     "full_address": "400 Airport Blvd, Austin, TX 78702, USA",
+     "range": null,
+     "business_status": "OPERATIONAL",
+     "reviews_data": [
+      {
+       "author_title": "Tom B",
+       "author_reviews_count": 2,
+       "review_rating": 3,
+       "review_timestamp": 1780299000,
+       "review_text": "Good work but nobody answers the phone.",
+       "owner_answer": null
+      },
+      {
+       "author_title": "Sara P",
+       "author_reviews_count": 15,
+       "review_rating": 5,
+       "review_timestamp": 1764747000,
+       "review_text": "Rick knows transmissions.",
+       "owner_answer": null
+      }
+     ],
+     "photos_data": [
+      {
+       "photo_url_big": "tools/audit-visual/samples/photos/brick-dim.png"
+      }
+     ]
+    },
+    {
+     "place_id": "us5",
+     "name": "Hill Country Tire & Lube",
+     "category": "Tire shop",
+     "subtypes": "Tire shop",
+     "rating": 3.9,
+     "reviews": 37,
+     "reviews_per_score": null,
+     "photos_count": 3,
+     "photo": null,
+     "verified": true,
+     "working_hours": {
+      "Monday": "8 AM–6 PM",
+      "Tuesday": "8 AM–6 PM",
+      "Wednesday": "8 AM–6 PM",
+      "Thursday": "8 AM–6 PM",
+      "Friday": "8 AM–6 PM",
+      "Saturday": "Closed",
+      "Sunday": "Closed"
+     },
+     "site": null,
+     "description": null,
+     "city": "Austin",
+     "state": "Texas",
+     "time_zone": "America/Chicago",
+     "phone": "+1 512-555-0105",
+     "full_address": "500 N Lamar Blvd, Austin, TX 78703, USA",
+     "range": null,
+     "business_status": "OPERATIONAL",
+     "reviews_data": [
+      {
+       "author_title": "Chris L",
+       "author_reviews_count": 3,
+       "review_rating": 4,
+       "review_timestamp": 1785483000,
+       "review_text": "Quick tire change.",
+       "owner_answer": null
+      }
+     ],
+     "photos_data": []
+    }
+   ]
+  }
+ ]
+}

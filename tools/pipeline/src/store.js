@@ -3,9 +3,9 @@
 
 import { readFile, writeFile, readdir, mkdir } from 'node:fs/promises';
 import path from 'node:path';
-import { DATA_DIR } from './config.js';
+import { dataDir } from './config.js';
 
-const dir = () => path.join(DATA_DIR, 'leads');
+const dir = () => path.join(dataDir(), 'leads');
 const file = (id) => path.join(dir(), `${id.replace(/[^\w-]/g, '_')}.json`);
 
 export async function getLead(id) {
@@ -42,7 +42,7 @@ export async function upsertSourced({ place, rank, target, searchPlaces }) {
   return saveLead(addEvent({
     lead_id: id, place_id: id, business_name: place.name, country: target.market, market: target.market,
     vertical: target.vertical, locale: target.locale, target_id: target.id, search_query: target.query,
-    consent_status: target.consent_status || 'none', suppressed: false, stage: 'sourced',
+    consent_status: target.consent_status || 'none', suppressed: false, stage: 'sourced', state: place.state || null,
     rank_today: rank, raw: place, search_places: searchPlaces, call_attempts: 0,
     created_at: new Date().toISOString(),
   }, 'sourced', { target: target.id }));

@@ -1,4 +1,4 @@
-// Outscraper place record (+ reviews, photos) -> the `prospect` facts audit-visual renders.
+// Raw place record from the Google Maps scan (+ reviews, photos) -> the `prospect` facts audit-visual renders.
 // Only facts from the listing; nothing here is estimated.
 
 const DAY = 86400;
@@ -109,10 +109,12 @@ export function toProspect(place, { reviews = [], photos = [], rank, locale = 'e
     open_now: true,
     has_website: Boolean(place.site),
     has_services_or_menu: Boolean(place.menu_link || place.order_links),
-    last_update_days_ago: null, // Outscraper's `posts` is usually empty; treat as no recent updates.
+    last_update_days_ago: null, // posts aren't read by the scan; treat as no recent updates.
     is_claimed: place.verified !== false,
     permanently_closed: place.business_status && place.business_status !== 'OPERATIONAL',
     rank_today: rank ?? null,
+    state: place.state || null,
+    time_zone: place.time_zone || null,
     latitude: place.latitude ?? null,
     longitude: place.longitude ?? null,
     photos: photoList.slice(0, 6),

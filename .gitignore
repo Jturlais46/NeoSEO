@@ -4,3 +4,4 @@ tools/audit-visual/out/
 .env.*
 *.log
 .DS_Store
+data/

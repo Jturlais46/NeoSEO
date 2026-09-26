@@ -1,0 +1,53 @@
+# What the pipeline bot prospects. One target = one Google Maps search (vertical x area).
+# The bot keeps `ready_buffer` warm leads per target: sourced, qualified, proposal written, visuals rendered.
+
+defaults:
+  locale: en                        # en, ms or zh: language of the visuals, proposal and call
+  variants: [phones-portrait, swipe]   # visuals 5 and 9 (docs/visual-options)
+  limit: 40                         # listings read per search
+  ready_buffer: 150                 # warm leads to keep ready per target
+  per_run_limit: 40                 # leads prepared per run
+  rules: { min_reviews: 3, max_reviews: 400, min_rating: 3.3, max_score: 75 }
+  links:
+    checkout: https://example.com/checkout
+    booking: https://example.com/book
+    optout: https://example.com/stop
+
+targets:
+  # --- Malaysia (Klang Valley first)
+  - id: my-pj-kopitiam
+    market: MY
+    query: kopitiam in SS2 Petaling Jaya
+    vertical: cafe
+  - id: my-pj-workshop
+    market: MY
+    query: car workshop in Petaling Jaya
+    vertical: auto_repair
+  - id: my-subang-salon
+    market: MY
+    query: hair salon in Subang Jaya
+    vertical: salon_barber
+  - id: my-kl-coffee-zh
+    market: MY
+    query: 咖啡店 Kuala Lumpur
+    vertical: cafe
+    locale: zh
+  - id: my-shah-alam-restoran-ms
+    market: MY
+    query: restoran Shah Alam
+    vertical: restaurant
+    locale: ms
+
+  # --- United States
+  - id: us-austin-auto
+    market: US
+    query: auto repair shop in Austin, TX
+    vertical: auto_repair
+  - id: us-austin-salon
+    market: US
+    query: hair salon in Austin, TX
+    vertical: salon_barber
+  - id: us-columbus-cafe
+    market: US
+    query: coffee shop in Columbus, OH
+    vertical: cafe
