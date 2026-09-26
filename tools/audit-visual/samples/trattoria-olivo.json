@@ -1,0 +1,53 @@
+{
+  "_note": "Fictional business and competitors, for demo purposes only.",
+  "locale": "en",
+  "audit_date": "Sep 20, 2026",
+  "prospect": {
+    "business_name": "Trattoria Olivo",
+    "city": "Riverton",
+    "primary_category": "Restaurant",
+    "primary_category_specific": false,
+    "secondary_categories": [],
+    "rating": 4.3,
+    "review_count": 38,
+    "reviews_last_90d": 2,
+    "owner_reply_rate": 0,
+    "photo_count": 7,
+    "has_description": false,
+    "has_hours": true,
+    "has_website": true,
+    "has_services_or_menu": false,
+    "last_update_days_ago": null,
+    "is_claimed": false,
+    "email": "hello@example.com",
+    "phone": "+15555550123"
+  },
+  "competitors": [
+    { "name": "Luca's Pizzeria", "review_count": 212, "rating": 4.6 },
+    { "name": "Via Roma Kitchen", "review_count": 148, "rating": 4.5 },
+    { "name": "Nonna Bea's", "review_count": 96, "rating": 4.7 }
+  ],
+  "proposal": {
+    "primary_category": "Italian restaurant",
+    "secondary_categories": ["Pizza restaurant", "Wine bar", "Takeout restaurant"],
+    "description": "Family-run Italian trattoria in downtown Riverton since 2014. We make our pasta by hand every morning and bake Neapolitan-style pizza in a wood-fired oven. Come for a quick lunch, a long dinner with a glass of natural wine, or book our back room for private dinners of up to 20 guests. Takeout and curbside pickup available every day.",
+    "services": ["Handmade pasta", "Wood-fired pizza", "Private dining for up to 20", "Takeout and curbside pickup", "Natural wine list"],
+    "photo_shot_list": ["Storefront", "Dining room", "Fresh pasta", "Pizza oven", "The team", "Patio"],
+    "update_ideas": [
+      "Week 1: Autumn menu launch, with a photo of the new pumpkin ravioli",
+      "Week 2: Private dining room for holiday parties, booking link",
+      "Week 3: Behind the scenes, pasta made fresh every morning",
+      "Week 4: Tuesday half-price wine offer"
+    ],
+    "sample_review_reply": {
+      "review_excerpt": "Great carbonara but we waited 25 minutes for a table even with a reservation.",
+      "reply": "Thank you for the kind words about the carbonara, and we're sorry about the wait. A reservation should mean a table ready on time; we've changed how we space bookings on busy evenings. We'd love to welcome you back and get it right. Marco, owner"
+    },
+    "setup_photo_count": 20
+  },
+  "links": {
+    "checkout": "https://example.com/checkout",
+    "booking": "https://example.com/book",
+    "optout": "https://example.com/stop"
+  }
+}

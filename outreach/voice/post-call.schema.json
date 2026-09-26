@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "post-call.schema.json",
+  "title": "Post-call extraction",
+  "description": "Extracted from every call transcript by our own Haiku step (provider-agnostic). Drives the lead timeline, follow-ups and the compliance audit trail.",
+  "type": "object",
+  "required": ["call_id", "flow", "outcome", "disclosed_ai", "recording_notice", "opt_out_requested"],
+  "additionalProperties": false,
+  "properties": {
+    "call_id": { "type": "string" },
+    "lead_id": { "type": "string" },
+    "flow": { "enum": ["callback_walkthrough", "inbound_line", "onboarding_verification", "client_checkin"] },
+    "outcome": {
+      "enum": [
+        "checkout_link_sent", "meeting_booked", "callback_scheduled", "access_granted",
+        "verification_pending", "ticket_created", "not_interested", "opt_out",
+        "voicemail", "no_answer", "transferred_to_human", "other"
+      ]
+    },
+    "interest_level": { "type": "integer", "minimum": 0, "maximum": 3, "description": "0 none, 1 curious, 2 warm, 3 ready to buy" },
+    "objections": {
+      "type": "array",
+      "items": { "enum": ["price", "is_this_google_or_scam", "has_agency", "diy", "timing", "no_value_seen", "wants_guarantee", "other"] }
+    },
+    "questions_asked": { "type": "array", "items": { "type": "string" } },
+    "profile_changes_requested": { "type": "array", "items": { "type": "string" }, "description": "Hours, services, events etc. (client check-ins and inbound support)" },
+    "csat": { "type": ["integer", "null"], "minimum": 1, "maximum": 5 },
+    "callback_at": { "type": ["string", "null"], "format": "date-time" },
+    "follow_up": { "type": "string", "description": "One sentence: the next action for the pipeline or the founder" },
+    "disclosed_ai": { "type": "boolean", "description": "Kit said it is an AI in the first sentence" },
+    "recording_notice": { "type": "boolean" },
+    "opt_out_requested": { "type": "boolean" },
+    "policy_flags": {
+      "type": "array",
+      "items": { "enum": ["claimed_google_affiliation", "promised_rankings", "pressure_or_urgency", "price_off_script", "denied_being_ai"] },
+      "description": "Any agent misbehavior. Non-empty => founder review and pathway fix."
+    }
+  }
+}

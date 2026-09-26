@@ -1,0 +1,19 @@
+{
+  "name": "audit-visual",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Renders a per-prospect before/after Google Business Profile comparison (PNG for email, HTML audit page).",
+  "type": "module",
+  "scripts": {
+    "render": "node src/render.js",
+    "sample": "node src/render.js samples/trattoria-olivo.json samples/boulangerie-tilleuls.json --out out",
+    "test": "node --test src/*.test.js"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  },
+  "dependencies": {
+    "@fontsource/fraunces": "^5.3.0",
+    "@fontsource/inter": "^5.3.0"
+  }
+}

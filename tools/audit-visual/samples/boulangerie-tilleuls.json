@@ -1,0 +1,54 @@
+{
+  "_note": "Établissement et concurrents fictifs, à des fins de démonstration uniquement.",
+  "locale": "fr",
+  "audit_date": "20 sept. 2026",
+  "prospect": {
+    "business_name": "Boulangerie des Tilleuls",
+    "city": "Saint-Aubin",
+    "primary_category": "Boulangerie",
+    "primary_category_specific": true,
+    "secondary_categories": [],
+    "rating": 4.1,
+    "review_count": 22,
+    "reviews_last_90d": 1,
+    "owner_reply_rate": 0.1,
+    "photo_count": 4,
+    "has_description": false,
+    "has_hours": false,
+    "has_website": false,
+    "has_services_or_menu": false,
+    "last_update_days_ago": 400,
+    "is_claimed": true,
+    "email": "contact@example.fr",
+    "phone": "+33255555555"
+  },
+  "competitors": [
+    { "name": "Maison Perrin", "review_count": 184, "rating": 4.7 },
+    { "name": "Au Pain d'Antan", "review_count": 121, "rating": 4.5 },
+    { "name": "La Fournée", "review_count": 67, "rating": 4.4 }
+  ],
+  "proposal": {
+    "primary_category": "Boulangerie",
+    "secondary_categories": ["Pâtisserie", "Sandwicherie", "Traiteur"],
+    "description": "Boulangerie artisanale au cœur de Saint-Aubin. Pain au levain cuit sur place chaque matin, viennoiseries pur beurre, pâtisseries de saison et formules déjeuner à emporter. Commandes pour vos événements : pièces montées, plateaux traiteur, pains spéciaux.",
+    "services": ["Pain au levain", "Viennoiseries pur beurre", "Formule déjeuner", "Commandes pour événements", "Gâteaux sur commande"],
+    "website_url": "https://example.fr/commande",
+    "photo_shot_list": ["Devanture", "Vitrine", "Fournil", "Viennoiseries", "L'équipe", "Formule midi"],
+    "update_ideas": [
+      "Semaine 1 : la galette des rois arrive, précommandes ouvertes",
+      "Semaine 2 : nouvelle formule déjeuner à 9,50 €",
+      "Semaine 3 : dans les coulisses du fournil à 4 h du matin",
+      "Semaine 4 : pièces montées pour vos fêtes, sur commande"
+    ],
+    "sample_review_reply": {
+      "review_excerpt": "Très bon pain mais plus de croissants à 10h un samedi...",
+      "reply": "Merci pour votre retour sur notre pain ! Vous avez raison pour les croissants du samedi : nous avons augmenté la fournée du week-end. Au plaisir de vous revoir, l'équipe des Tilleuls."
+    },
+    "setup_photo_count": 20
+  },
+  "links": {
+    "checkout": "https://example.fr/abonnement",
+    "booking": "https://example.fr/rdv",
+    "optout": "https://example.fr/stop"
+  }
+}

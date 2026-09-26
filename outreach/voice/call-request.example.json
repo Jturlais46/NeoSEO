@@ -1,0 +1,35 @@
+{
+  "_comment": "Example body for POST https://api.bland.ai/v1/calls. Built by the n8n place_call sub-workflow only after the consent gate passes. Verify parameter names against docs.bland.ai/api-v1/post/calls before going live (including how to pin a Pathway version).",
+  "phone_number": "+15555550123",
+  "pathway_id": "PATHWAY_ID_CALLBACK_WALKTHROUGH",
+  "voice": "VOICE_ID",
+  "wait_for_greeting": true,
+  "record": true,
+  "max_duration": 12,
+  "language": "en",
+  "timezone": "America/Chicago",
+  "voicemail": {
+    "action": "leave_message",
+    "message": "Hi Marco, it's Kit, Mapkeeper's AI assistant, returning your request about the audit for Trattoria Olivo. I'll email you the link, and you can reply there anytime. Thanks!"
+  },
+  "request_data": {
+    "first_name": "Marco",
+    "business_name": "Trattoria Olivo",
+    "score_today": 25,
+    "score_after": 83,
+    "finding_1": "your profile isn't claimed yet, so you can't reply to reviews",
+    "finding_2": "none of your 38 reviews has a reply",
+    "competitor_1": "Luca's Pizzeria",
+    "price_keep": "$99",
+    "expiry_date": "December 19",
+    "founder_first_name": "FOUNDER_FIRST_NAME"
+  },
+  "metadata": {
+    "lead_id": "lead_01J9Z0EXAMPLE",
+    "audit_token": "tok_EXAMPLE",
+    "flow": "callback_walkthrough",
+    "consent_status": "written",
+    "consent_evidence_id": "cons_01J9Z0EXAMPLE"
+  },
+  "webhook": "https://ops.example.com/hooks/bland/post-call"
+}

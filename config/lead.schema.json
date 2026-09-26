@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lead.schema.json",
+  "title": "Lead / client record",
+  "description": "One record per business, keyed by Google place ID. Mirrored nightly to CSV/JSON and a Google Sheet so any agent (Claude Code, Muse, n8n) can read the business.",
+  "type": "object",
+  "required": ["lead_id", "place_id", "business_name", "country", "stage", "consent_status", "suppressed"],
+  "properties": {
+    "lead_id": { "type": "string" },
+    "place_id": { "type": "string", "description": "Google place ID (storable indefinitely under Maps terms)" },
+    "business_name": { "type": "string" },
+    "vertical": { "enum": ["auto_repair", "salon_barber", "restaurant", "other"] },
+    "city": { "type": "string" },
+    "region": { "type": "string", "description": "US state / FR department, used for state rules and time zone" },
+    "country": { "type": "string", "pattern": "^[A-Z]{2}$" },
+    "timezone": { "type": "string" },
+    "legal_form": { "type": ["string", "null"], "description": "ltd, llp, sole_trader, sarl, sas, ei, llc..." },
+    "first_name": { "type": ["string", "null"] },
+    "email": { "type": ["string", "null"] },
+    "email_source": { "enum": ["website", "gbp", "enrichment", "inbound", null] },
+    "email_status": { "enum": ["valid", "catch_all", "invalid", "unknown", null] },
+    "phone_e164": { "type": ["string", "null"] },
+    "line_type": { "enum": ["landline", "mobile", "voip", "unknown", null] },
+    "consent_status": { "enum": ["none", "written", "inbound", "client"] },
+    "consent_evidence_id": { "type": ["string", "null"], "description": "Form version, timestamp, IP stored separately" },
+    "sms_consent": { "type": "boolean", "default": false },
+    "suppressed": { "type": "boolean" },
+    "suppressed_reason": { "type": ["string", "null"] },
+    "segment": { "enum": ["neglected", "behind_on_reviews", "unclaimed", "skip", null] },
+    "health_score": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 },
+    "priority": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 },
+    "audit_token": { "type": ["string", "null"] },
+    "audit_expires_at": { "type": ["string", "null"], "format": "date-time" },
+    "stage": {
+      "enum": [
+        "sourced", "gated_out", "audited", "in_sequence", "replied", "engaged",
+        "checkout_sent", "client_onboarding", "client_active", "client_cancelled", "closed_lost"
+      ]
+    },
+    "plan": { "enum": ["keep", "grow", null] },
+    "stripe_customer_id": { "type": ["string", "null"] },
+    "last_email_thread_id": { "type": ["string", "null"] },
+    "last_call_id": { "type": ["string", "null"] },
+    "owner_notes": { "type": ["string", "null"] },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
+  }
+}

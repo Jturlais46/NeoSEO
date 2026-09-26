@@ -1,0 +1,65 @@
+# Compliance rules as data. The Guard (code) reads this before every email, call, SMS or mailing.
+# Research basis: docs/01-research.md section 3. Not legal advice: items marked review: lawyer
+# must be confirmed by counsel before launch (see docs/09-compliance-checklist.md).
+
+version: 1
+
+global:
+  suppression:
+    scope: [email, email_domain, phone, place_id, postal_address]
+    permanent: true
+  kill_switch:
+    bounce_rate_max: 0.03        # auto-pause all outbound above this (rolling 7 days)
+    complaint_rate_max: 0.002
+  voice:
+    allowed_consent: [written, inbound, client]   # never cold
+    require_line_type_check: true
+    require_reassigned_number_check: true        # US: FCC Reassigned Numbers Database
+    first_sentence_must_include: [ai_disclosure, company_name, reason]
+    recording_notice: always
+    max_duration_minutes: 12
+  email:
+    first_touch_links_max: 0
+    words_max: { en: 80, fr: 90 }
+    require: [sender_identity, postal_address, opt_out_line, list_unsubscribe_header]
+    open_tracking: false
+  exclude_verticals_pilot: [medical, dental, legal, financial]
+
+countries:
+  US:
+    email: allowed                 # CAN-SPAM
+    voice:
+      calling_window_local: ["09:00", "20:00"]   # stricter than the 08:00-21:00 legal window
+      days: [mon, tue, wed, thu, fri, sat]
+      state_rules:
+        CA: { automated_calls: blocked, review: lawyer }   # PUC 2874 / AB 2905
+        WA: { automated_calls: blocked, review: lawyer }   # RCW 80.36.400
+  FR:
+    email: allowed_if_profession_related     # CNIL B2B rule
+    email_extra: [data_source_notice, privacy_link]
+    voice:
+      calling_window_local: [["10:00", "13:00"], ["14:00", "20:00"]]
+      days: [mon, tue, wed, thu, fri]
+      review: lawyer                          # automated-call rules for professionals unsettled
+  GB:
+    email:
+      allowed_legal_forms: [ltd, plc, llp]   # sole traders / partnerships need consent (PECR)
+    voice: { allowed_consent: [written, inbound, client], review: lawyer }
+  DE:
+    email: blocked                            # UWG 7(2): express consent even B2B
+    voice: blocked_unless_client
+  CA:
+    email: blocked_pending_review             # CASL implied consent needs assessment
+    voice: blocked_unless_client
+  default:
+    email: blocked_pending_review
+    voice: blocked_unless_client
+
+sms:
+  us_requires: [a2p_10dlc_registration, recipient_consent]
+  default_channel_when_unclear: email
+
+retention:
+  prospect_no_reply_days: 365
+  audit_page_expiry_days: 90
+  call_recordings_days: 180
