@@ -1,0 +1,165 @@
+{
+  "_note": "Fictional kopitiam, reviewers and competitors in Petaling Jaya for demo purposes. Photos: scikit-image sample data (CC0) and a rendered menu board.",
+  "locale": "ms",
+  "market": "MY",
+  "audit_date": "20 Sep 2026",
+  "projection_months": 3,
+  "search_query": "kopitiam berhampiran SS2 Petaling Jaya",
+  "prospect": {
+    "business_name": "Kopitiam Seri Mawar",
+    "vertical": "cafe",
+    "city": "Petaling Jaya",
+    "address": "88, Jalan SS 2/61, SS 2, 47300 Petaling Jaya",
+    "phone_display": "03-7800 0012",
+    "price_level": "RM 1–20",
+    "primary_category": "Restoran",
+    "primary_category_specific": false,
+    "secondary_categories": [],
+    "rating": 3.9,
+    "review_count": 27,
+    "reviews_last_90d": 1,
+    "owner_reply_rate": 0,
+    "photo_count": 2,
+    "has_description": false,
+    "has_hours": false,
+    "has_website": false,
+    "has_services_or_menu": false,
+    "last_update_days_ago": null,
+    "is_claimed": true,
+    "rank_today": 7,
+    "phone": "+60378000012",
+    "photos": [
+      {
+        "src": "photos/brick-dim.png"
+      }
+    ],
+    "recent_reviews": [
+      {
+        "author": "Farid M.",
+        "meta": "4 ulasan",
+        "rating": 3,
+        "when": "5 bulan lalu",
+        "text": "Food ok but Google said open, reached at 4pm already closed. Please update your hours."
+      },
+      {
+        "author": "Mei Ling C.",
+        "meta": "Local Guide · 88 ulasan",
+        "rating": 4,
+        "when": "7 bulan lalu",
+        "text": "Old-school kopitiam vibe. The kaya toast is good, kopi a bit sweet for me."
+      }
+    ]
+  },
+  "competitors": [
+    {
+      "name": "Restoran Wah Seng",
+      "review_count": 634,
+      "rating": 4.3,
+      "category": "Restoran Cina"
+    },
+    {
+      "name": "Kopi Kaki SS2",
+      "review_count": 418,
+      "rating": 4.5,
+      "category": "Kedai kopi"
+    },
+    {
+      "name": "Nasi Lemak Kak Yah",
+      "review_count": 289,
+      "rating": 4.4,
+      "category": "Restoran Malaysia"
+    }
+  ],
+  "proposal": {
+    "primary_category": "Kedai kopi",
+    "secondary_categories": [
+      "Restoran Malaysia",
+      "Restoran sarapan",
+      "Gerai penjaja"
+    ],
+    "hours_today": "Tutup pada 3 PTG",
+    "website_url": "seri-mawar.my",
+    "description": "Kopitiam keluarga di SS2 sejak 1998. Kopi O dan teh tarik cara tradisional, roti bakar arang dengan kaya buatan sendiri, telur separuh masak dan nasi lemak ayam setiap pagi. Ruang berhawa dingin di belakang. Dibuka setiap hari dari 7 pagi.",
+    "services": [
+      "Kopi O dan teh tarik",
+      "Roti bakar kaya",
+      "Nasi lemak ayam",
+      "Mee goreng mamak",
+      "Bungkus dan penghantaran Grab"
+    ],
+    "photos": [
+      {
+        "src": "photos/coffee.png"
+      },
+      {
+        "src": "photos/coffee-closeup.png",
+        "label": "Terkini"
+      },
+      {
+        "src": "photos/menu-board-my.png",
+        "label": "Menu"
+      },
+      {
+        "src": "photos/brick-warm.png",
+        "label": "Suasana"
+      }
+    ],
+    "posts": [
+      {
+        "text": "Baharu: kopi O ais kosong dan set roti bakar kaya mentega, RM6.90 sebelum 10 pagi.",
+        "when": "2 hari lalu",
+        "photo": "photos/coffee-closeup.png"
+      },
+      {
+        "text": "Dibuka pagi Deepavali, 7 pagi hingga 12 tengah hari. Selamat Hari Deepavali!",
+        "when": "1 minggu lalu",
+        "photo": "photos/menu-board-my.png"
+      }
+    ],
+    "illustrative_reviews": [
+      {
+        "author": "Aisyah R.",
+        "meta": "Local Guide · 64 ulasan · 210 foto",
+        "rating": 5,
+        "when": "2 minggu lalu",
+        "text": "Kopi O terbaik di SS2! Roti bakar rangup, telur separuh masak sempurna setiap kali. Uncle Lim ingat pesanan saya dan servis laju walaupun waktu puncak 8 pagi.",
+        "owner_reply": "Terima kasih Aisyah! Jumpa esok untuk kopi O anda. Uncle Lim",
+        "owner_reply_when": "2 minggu lalu"
+      },
+      {
+        "author": "Hafiz Z.",
+        "meta": "12 ulasan",
+        "rating": 5,
+        "when": "1 bulan lalu",
+        "text": "Nasi lemak sambal memang padu, tak terlalu manis. Ada ruang aircond di belakang. Parking susah hari bekerja tapi berbaloi.",
+        "owner_reply": "Terima kasih Hafiz! Cuba mee goreng mamak lain kali. Uncle Lim",
+        "owner_reply_when": "1 bulan lalu"
+      }
+    ],
+    "photo_shot_list": [
+      "Depan kedai dan papan tanda",
+      "Kopi sedang ditarik",
+      "Set roti bakar kaya",
+      "Nasi lemak ayam",
+      "Uncle Lim dan pasukan",
+      "Ruang berhawa dingin"
+    ],
+    "update_ideas": [
+      "Minggu 1: Promosi set sarapan sebelum 10 pagi",
+      "Minggu 2: Waktu buka Deepavali",
+      "Minggu 3: Di sebalik kaunter, cara kami menarik teh tarik",
+      "Minggu 4: Kopi O ais kosong baharu"
+    ],
+    "sample_review_reply": {
+      "review_excerpt": "Food ok but Google said open, reached at 4pm already closed. Please update your hours.",
+      "reply": "Maaf atas kesulitan! Waktu buka kami kini tepat di Google: 7 pagi hingga 3 petang setiap hari. Kopi seterusnya belanja kami. Uncle Lim"
+    },
+    "setup_photo_count": 20
+  },
+  "links": {
+    "checkout": "https://example.com/checkout",
+    "booking": "https://example.com/book",
+    "optout": "https://example.com/stop"
+  },
+  "token": "kopitiam-seri-mawar-ms"
+}

@@ -1,0 +1,165 @@
+{
+  "_note": "Fictional kopitiam, reviewers and competitors in Petaling Jaya for demo purposes. Photos: scikit-image sample data (CC0) and a rendered menu board.",
+  "locale": "zh",
+  "market": "MY",
+  "audit_date": "2026年9月20日",
+  "projection_months": 3,
+  "search_query": "SS2 八打灵再也 咖啡店",
+  "prospect": {
+    "business_name": "Kopitiam Seri Mawar",
+    "vertical": "cafe",
+    "city": "八打灵再也",
+    "address": "88, Jalan SS 2/61, SS 2, 47300 Petaling Jaya",
+    "phone_display": "03-7800 0012",
+    "price_level": "RM 1–20",
+    "primary_category": "餐馆",
+    "primary_category_specific": false,
+    "secondary_categories": [],
+    "rating": 3.9,
+    "review_count": 27,
+    "reviews_last_90d": 1,
+    "owner_reply_rate": 0,
+    "photo_count": 2,
+    "has_description": false,
+    "has_hours": false,
+    "has_website": false,
+    "has_services_or_menu": false,
+    "last_update_days_ago": null,
+    "is_claimed": true,
+    "rank_today": 7,
+    "phone": "+60378000012",
+    "photos": [
+      {
+        "src": "photos/brick-dim.png"
+      }
+    ],
+    "recent_reviews": [
+      {
+        "author": "Farid M.",
+        "meta": "4 条评价",
+        "rating": 3,
+        "when": "5 个月前",
+        "text": "Food ok but Google said open, reached at 4pm already closed. Please update your hours."
+      },
+      {
+        "author": "Mei Ling C.",
+        "meta": "本地向导 · 88 条评价",
+        "rating": 4,
+        "when": "7 个月前",
+        "text": "Old-school kopitiam vibe. The kaya toast is good, kopi a bit sweet for me."
+      }
+    ]
+  },
+  "competitors": [
+    {
+      "name": "Restoran Wah Seng",
+      "review_count": 634,
+      "rating": 4.3,
+      "category": "中餐馆"
+    },
+    {
+      "name": "Kopi Kaki SS2",
+      "review_count": 418,
+      "rating": 4.5,
+      "category": "咖啡店"
+    },
+    {
+      "name": "Nasi Lemak Kak Yah",
+      "review_count": 289,
+      "rating": 4.4,
+      "category": "马来西亚餐馆"
+    }
+  ],
+  "proposal": {
+    "primary_category": "咖啡店",
+    "secondary_categories": [
+      "马来西亚餐馆",
+      "早餐店",
+      "小贩摊位"
+    ],
+    "hours_today": "下午3点打烊",
+    "website_url": "seri-mawar.my",
+    "description": "SS2 家族经营的老字号咖啡店，自1998年开业。传统手法冲泡的咖啡乌和拉茶，炭烤咖椰吐司、半生熟蛋和椰浆饭每天早上新鲜供应。店内后方设有冷气座位区。每天早上7点营业。",
+    "services": [
+      "咖啡乌和拉茶",
+      "咖椰吐司",
+      "椰浆饭",
+      "嘛嘛炒面",
+      "外带和 Grab 外送"
+    ],
+    "photos": [
+      {
+        "src": "photos/coffee.png"
+      },
+      {
+        "src": "photos/coffee-closeup.png",
+        "label": "最新"
+      },
+      {
+        "src": "photos/menu-board-my.png",
+        "label": "菜单"
+      },
+      {
+        "src": "photos/brick-warm.png",
+        "label": "氛围"
+      }
+    ],
+    "posts": [
+      {
+        "text": "新品：冰咖啡乌无糖配咖椰牛油吐司套餐，早上10点前只需 RM6.90。",
+        "when": "2 天前",
+        "photo": "photos/coffee-closeup.png"
+      },
+      {
+        "text": "屠妖节早上照常营业，7点至中午12点。屠妖节快乐！",
+        "when": "1 周前",
+        "photo": "photos/menu-board-my.png"
+      }
+    ],
+    "illustrative_reviews": [
+      {
+        "author": "Wendy L.",
+        "meta": "本地向导 · 64 条评价 · 210 张照片",
+        "rating": 5,
+        "when": "2 周前",
+        "text": "SS2 最好喝的咖啡乌！吐司香脆，半生熟蛋每次都刚刚好。林叔记得我的点单，早上8点高峰期也上得很快。",
+        "owner_reply": "谢谢 Wendy！明天见，老样子咖啡乌。林叔",
+        "owner_reply_when": "2 周前"
+      },
+      {
+        "author": "Jason T.",
+        "meta": "12 条评价",
+        "rating": 5,
+        "when": "1 个月前",
+        "text": "椰浆饭的参巴很正宗，不会太甜。后面有冷气座位。平日停车比较难，但很值得。",
+        "owner_reply": "谢谢 Jason！下次试试我们的嘛嘛炒面。林叔",
+        "owner_reply_when": "1 个月前"
+      }
+    ],
+    "photo_shot_list": [
+      "店面和招牌",
+      "拉咖啡",
+      "咖椰吐司套餐",
+      "椰浆饭",
+      "林叔和团队",
+      "冷气座位区"
+    ],
+    "update_ideas": [
+      "第1周：早上10点前早餐套餐优惠",
+      "第2周：屠妖节营业时间",
+      "第3周：柜台后面，我们如何拉茶",
+      "第4周：新品冰咖啡乌无糖"
+    ],
+    "sample_review_reply": {
+      "review_excerpt": "Food ok but Google said open, reached at 4pm already closed. Please update your hours.",
+      "reply": "抱歉让您白跑一趟！我们的营业时间已在 Google 上更新：每天早上7点至下午3点。下次咖啡我们请。林叔"
+    },
+    "setup_photo_count": 20
+  },
+  "links": {
+    "checkout": "https://example.com/checkout",
+    "booking": "https://example.com/book",
+    "optout": "https://example.com/stop"
+  },
+  "token": "kopitiam-seri-mawar-zh"
+}

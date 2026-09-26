@@ -56,7 +56,7 @@ export function panelPage({ state, extra, vertical, locale, fontBase }) {
 const COMP_CSS = `
 :root{--ink:#14261F;--muted:#5E6E67;--paper:#F6F2EA;--line:#E3DCCF;--brand:#1D6B51;--brand-2:#0F4735}
 *{box-sizing:border-box}
-html,body{margin:0;width:1200px;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+html,body{margin:0;width:1200px;background:var(--paper);color:var(--ink);font-family:Inter,"Noto Sans SC","WenQuanYi Zen Hei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 .frame{padding:30px 44px 36px}
 .top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;height:74px}
 .title{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:var(--ts,32px);line-height:1.1;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -76,6 +76,10 @@ html,body{margin:0;width:1200px;background:var(--paper);color:var(--ink);font-fa
 .k .v{margin-top:6px;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
 .k .v b{color:var(--brand);font-weight:800}
 .k .v span{color:var(--muted);font-weight:500;margin:0 6px}
+/* dark theme */
+body.dark{--ink:#EEF3F0;--muted:#9AABA3;--paper:#0E1512;--line:#26332E;--brand:#4CC095;--brand-2:#8FDDBF;background:var(--paper)}
+body.dark .lbl{background:#26332E;color:#C9D4CF}body.dark .lbl.after{color:#0E1512}
+body.dark .k{background:#17221E}body.dark .shot{box-shadow:0 12px 36px rgba(0,0,0,.5)}
 /* card variant: fixed 1200x630, panels cropped to photo bottom + name + rating */
 body.card{height:630px;overflow:hidden}
 .card .frame{padding:26px 44px 0}
@@ -89,12 +93,12 @@ body.card{height:630px;overflow:hidden}
 
 const titleSize = (text) => (text.length <= 56 ? 32 : text.length <= 66 ? 28 : 24);
 
-export function comparisonHTML({ data, brand, locale, fontBase, beforeSrc, afterSrc, kpiRows, months, variant = 'full' }) {
+export function comparisonHTML({ data, brand, locale, fontBase, beforeSrc, afterSrc, kpiRows, months, variant = 'full', theme = 'light' }) {
   const t = STRINGS[locale];
   const p = data.prospect;
   const headline = t.headline(p.business_name);
   return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8">
-<style>${fontFaces(fontBase)}${COMP_CSS}</style></head><body class="${variant}"><div class="frame">
+<style>${fontFaces(fontBase)}${COMP_CSS}</style></head><body class="${variant} ${theme}"><div class="frame">
   <div class="top"><div style="min-width:0"><div class="title" style="--ts:${titleSize(headline)}px">${esc(headline)}</div>
     <div class="sub">${esc(t.subline(brand.name, p.city))}</div></div>
     <div class="brand"><span class="pin"></span>${esc(brand.name)}</div></div>

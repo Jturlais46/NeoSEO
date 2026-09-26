@@ -1,0 +1,109 @@
+{
+  "_note": "Fictional kopitiam, reviewers and competitors in Petaling Jaya for demo purposes. Photos: scikit-image sample data (CC0) and a rendered menu board.",
+  "locale": "en",
+  "market": "MY",
+  "audit_date": "20 Sep 2026",
+  "projection_months": 3,
+  "search_query": "kopitiam near SS2 Petaling Jaya",
+  "prospect": {
+    "business_name": "Kopitiam Seri Mawar",
+    "vertical": "cafe",
+    "city": "Petaling Jaya",
+    "address": "88, Jalan SS 2/61, SS 2, 47300 Petaling Jaya",
+    "phone_display": "03-7800 0012",
+    "price_level": "RM 1–20",
+    "primary_category": "Restaurant",
+    "primary_category_specific": false,
+    "secondary_categories": [],
+    "rating": 3.9,
+    "review_count": 27,
+    "reviews_last_90d": 1,
+    "owner_reply_rate": 0,
+    "photo_count": 2,
+    "has_description": false,
+    "has_hours": false,
+    "has_website": false,
+    "has_services_or_menu": false,
+    "last_update_days_ago": null,
+    "is_claimed": true,
+    "rank_today": 7,
+    "phone": "+60378000012",
+    "photos": [{ "src": "photos/brick-dim.png" }],
+    "recent_reviews": [
+      {
+        "author": "Farid M.",
+        "meta": "4 reviews",
+        "rating": 3,
+        "when": "5 months ago",
+        "text": "Food ok but Google said open, reached at 4pm already closed. Please update your hours."
+      },
+      {
+        "author": "Mei Ling C.",
+        "meta": "Local Guide · 88 reviews",
+        "rating": 4,
+        "when": "7 months ago",
+        "text": "Old-school kopitiam vibe. The kaya toast is good, kopi a bit sweet for me."
+      }
+    ]
+  },
+  "competitors": [
+    { "name": "Restoran Wah Seng", "review_count": 634, "rating": 4.3, "category": "Chinese restaurant" },
+    { "name": "Kopi Kaki SS2", "review_count": 418, "rating": 4.5, "category": "Coffee shop" },
+    { "name": "Nasi Lemak Kak Yah", "review_count": 289, "rating": 4.4, "category": "Malaysian restaurant" }
+  ],
+  "proposal": {
+    "primary_category": "Coffee shop",
+    "secondary_categories": ["Malaysian restaurant", "Breakfast restaurant", "Hawker stall"],
+    "hours_today": "Closes 3 PM",
+    "website_url": "seri-mawar.my",
+    "description": "Family-run kopitiam in SS2 since 1998. Kopi O and teh tarik pulled the traditional way, charcoal-toasted roti bakar with homemade kaya, half-boiled eggs and nasi lemak ayam every morning. Air-conditioned seating at the back. Open daily from 7 AM.",
+    "services": ["Kopi O and teh tarik", "Roti bakar kaya", "Nasi lemak ayam", "Mee goreng mamak", "Takeaway and Grab delivery"],
+    "photos": [
+      { "src": "photos/coffee.png" },
+      { "src": "photos/coffee-closeup.png", "label": "Latest" },
+      { "src": "photos/menu-board-my.png", "label": "Menu" },
+      { "src": "photos/brick-warm.png", "label": "Vibe" }
+    ],
+    "posts": [
+      { "text": "New: iced kopi O kosong and kaya butter toast set, RM6.90 before 10 AM.", "when": "2 days ago", "photo": "photos/coffee-closeup.png" },
+      { "text": "Open on Deepavali morning, 7 AM to 12 PM. Selamat Hari Deepavali!", "when": "1 week ago", "photo": "photos/menu-board-my.png" }
+    ],
+    "illustrative_reviews": [
+      {
+        "author": "Aisyah R.",
+        "meta": "Local Guide · 64 reviews · 210 photos",
+        "rating": 5,
+        "when": "2 weeks ago",
+        "text": "Best kopi O in SS2! Roti bakar crispy, half-boiled eggs perfect every time. Uncle Lim remembers my order and service is fast even at the 8 AM rush.",
+        "owner_reply": "Terima kasih Aisyah! See you tomorrow for your kopi O. Uncle Lim",
+        "owner_reply_when": "2 weeks ago"
+      },
+      {
+        "author": "Jason T.",
+        "meta": "12 reviews",
+        "rating": 5,
+        "when": "1 month ago",
+        "text": "Nasi lemak sambal is legit, not too sweet. Aircond section at the back is a bonus. Parking tough on weekdays but worth it.",
+        "owner_reply": "Thanks Jason! Try the mee goreng mamak next time. Uncle Lim",
+        "owner_reply_when": "1 month ago"
+      }
+    ],
+    "photo_shot_list": ["Shopfront and signboard", "Kopi being pulled", "Roti bakar kaya set", "Nasi lemak ayam", "Uncle Lim and the team", "Air-conditioned seating"],
+    "update_ideas": [
+      "Week 1: Breakfast set promo before 10 AM",
+      "Week 2: Deepavali opening hours",
+      "Week 3: Behind the counter, how we pull our teh tarik",
+      "Week 4: New iced kopi O kosong"
+    ],
+    "sample_review_reply": {
+      "review_excerpt": "Food ok but Google said open, reached at 4pm already closed. Please update your hours.",
+      "reply": "Sorry about the wasted trip! Our hours are now correct on Google: 7 AM to 3 PM daily. Next kopi on us. Uncle Lim"
+    },
+    "setup_photo_count": 20
+  },
+  "links": {
+    "checkout": "https://example.com/checkout",
+    "booking": "https://example.com/book",
+    "optout": "https://example.com/stop"
+  }
+}

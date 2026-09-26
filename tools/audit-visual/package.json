@@ -6,9 +6,11 @@
   "type": "module",
   "scripts": {
     "render": "node src/render.js",
-    "sample": "node src/render.js samples/ember-oak-coffee.json samples/cafe-des-tilleuls.json --out out",
+    "sample": "node src/render.js samples/kopitiam-seri-mawar.json samples/ember-oak-coffee.json --out out",
     "test": "node --test src/*.test.js",
-    "capture": "node src/capture.js"
+    "capture": "node src/capture.js",
+    "options": "node src/render.js samples/kopitiam-seri-mawar.json --out out --variants all && node src/render.js samples/kopitiam-seri-mawar-ms.json samples/kopitiam-seri-mawar-zh.json --out out --variants card,phones-portrait,story,stats-hero && node src/gallery.js out/kopitiam-seri-mawar --extra out/kopitiam-seri-mawar-ms,out/kopitiam-seri-mawar-zh",
+    "gallery": "node src/gallery.js"
   },
   "devDependencies": {
     "playwright": "1.56.1"
